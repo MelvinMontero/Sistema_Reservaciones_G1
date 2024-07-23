@@ -9,10 +9,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 using LinqToDB;
+using LinqToDB.Common;
 using LinqToDB.Configuration;
+using LinqToDB.Data;
 using LinqToDB.Mapping;
 
 namespace DataModels
@@ -198,6 +201,34 @@ namespace DataModels
 		/// </summary>
 		[Association(ThisKey="IdPersona", OtherKey="IdPersona", CanBeNull=false)]
 		public Persona Persona { get; set; }
+
+		#endregion
+	}
+
+	public static partial class PvProyectoFinalDBStoredProcedures
+	{
+		#region SpMisReservaciones
+
+		public static IEnumerable<SpMisReservacionesResult> SpMisReservaciones(this PvProyectoFinalDB dataConnection, int? @idPersona)
+		{
+			var parameters = new []
+			{
+				new DataParameter("@idPersona", @idPersona, LinqToDB.DataType.Int32)
+			};
+
+			return dataConnection.QueryProc<SpMisReservacionesResult>("[dbo].[sp_MisReservaciones]", parameters);
+		}
+
+		public partial class SpMisReservacionesResult
+		{
+			[Column("# Reservación")] public int      _Reservación { get; set; }
+			                          public string   Cliente      { get; set; }
+			                          public string   Hotel        { get; set; }
+			[Column("Fecha Entrada")] public DateTime FechaEntrada { get; set; }
+			[Column("Fecha Salida") ] public DateTime FechaSalida  { get; set; }
+			                          public decimal  Costo        { get; set; }
+			                          public char     Estado       { get; set; }
+		}
 
 		#endregion
 	}

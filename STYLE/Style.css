@@ -1,0 +1,24 @@
+﻿.grid-view {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.header-center, .item-center {
+    text-align: center;
+}
+
+.header-left, .item-left {
+    text-align: left;
+}
+
+.header-right, .item-right {
+    text-align: right;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.item-right {
+    padding-right: 10px;
+}
