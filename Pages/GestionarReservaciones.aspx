@@ -12,7 +12,7 @@
             <asp:Button ID="btnFiltrar" runat="server" Text="Filtrar" OnClick="btnFiltrar_Click" />
          </div>
 
-   <%-- la misma de la otra pagina--%>
+   <%-- la misma de la otra pagina  --%>
 <a href="~/Pages/CrearReservacion.aspx">Nueva Reservación</a>
 <asp:GridView ID="gvMisReservaciones" runat="server" AutoGenerateColumns="false" CssClass="grid-view">
     <Columns>
