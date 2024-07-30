@@ -11,7 +11,10 @@ namespace Sistema_Reservaciones_G1
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["login"] != null)
+            {
 
+            }
         }
     }
 }

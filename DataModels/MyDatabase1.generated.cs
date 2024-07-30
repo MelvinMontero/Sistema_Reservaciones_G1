@@ -207,6 +207,27 @@ namespace DataModels
 
 	public static partial class PvProyectoFinalDBStoredProcedures
 	{
+		#region SpAutenticarUsuario
+
+		public static IEnumerable<Persona> SpAutenticarUsuario(this PvProyectoFinalDB dataConnection, string @email, string @clave)
+		{
+			var parameters = new []
+			{
+				new DataParameter("@email", @email, LinqToDB.DataType.VarChar)
+				{
+					Size = 150
+				},
+				new DataParameter("@clave", @clave, LinqToDB.DataType.VarChar)
+				{
+					Size = 15
+				}
+			};
+
+			return dataConnection.QueryProc<Persona>("[dbo].[sp_Autenticar_Usuario]", parameters);
+		}
+
+		#endregion
+
 		#region SpMisReservaciones
 
 		public static IEnumerable<SpMisReservacionesResult> SpMisReservaciones(this PvProyectoFinalDB dataConnection, int? @idPersona)
@@ -221,13 +242,12 @@ namespace DataModels
 
 		public partial class SpMisReservacionesResult
 		{
-			[Column("# Reservación")] public int      _Reservación { get; set; }
-			                          public string   Cliente      { get; set; }
-			                          public string   Hotel        { get; set; }
-			[Column("Fecha Entrada")] public DateTime FechaEntrada { get; set; }
-			[Column("Fecha Salida") ] public DateTime FechaSalida  { get; set; }
-			                          public decimal  Costo        { get; set; }
-			                          public char     Estado       { get; set; }
+			[Column("idReservacion")] public int       IdReservacion { get; set; }
+			[Column("nombre")       ] public string    Nombre        { get; set; }
+			[Column("fechaEntrada") ] public DateTime? FechaEntrada  { get; set; }
+			[Column("fechaSalida")  ] public DateTime? FechaSalida   { get; set; }
+			[Column("costoTotal")   ] public decimal   CostoTotal    { get; set; }
+			[Column("estado")       ] public char      Estado        { get; set; }
 		}
 
 		#endregion
