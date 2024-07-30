@@ -11,6 +11,16 @@ namespace Sistema_Reservaciones_G1
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["EsEmpleado"] != null && (bool)Session["EsEmpleado"])
+            {
+                hlGestionarReservaciones.Visible = true;
+                hlGestionarHabitaciones.Visible = true;
+            }
+            else
+            {
+                hlGestionarReservaciones.Visible = false;
+                hlGestionarHabitaciones.Visible = false;
+            }
         }
     }
 }

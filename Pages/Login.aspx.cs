@@ -25,20 +25,43 @@ namespace Sistema_Reservaciones_G1.Pages
             {
                 using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
                 {
-                    var persona = db.SpAutenticarUsuario(Email, Clave).FirstOrDefault();
-                    if (persona.Email.Equals(Email) && persona.Clave.Equals(Clave))
+                    try
                     {
-                        Session["idPersona"] = persona.IdPersona;
-                        Session["NombreCompleto"] = persona.NombreCompleto;
-                        Session["Email"] = persona.Email;
-                        Session["EsEmpleado"] = persona.EsEmpleado;
-                        Response.Redirect("~/Pages/MisReservaciones.aspx");
+                        var persona = db.SpAutenticarUsuario(Email, Clave).FirstOrDefault();
+                        if (persona!=null)
+                        {
+                            if (persona.Email.Equals(Email) && persona.Clave.Equals(Clave))
+                            {
+                                Session["idPersona"] = persona.IdPersona;
+                                Session["NombreCompleto"] = persona.NombreCompleto;
+                                Session["Email"] = persona.Email;
+                                Session["EsEmpleado"] = persona.EsEmpleado;
+                                if (Session["EsEmpleado"] != null && (bool)Session["EsEmpleado"])
+                                {
+                                    Response.Redirect("~/Pages/GestionarReservaciones.aspx");
+                                }
+                                else
+                                {
+                                    Response.Redirect("~/Pages/MisReservaciones.aspx");
+                                }
+
+                            }
+                            else
+                            {
+                                lblMensaje.Text = "Usuario o Constraseña Incorrectos";
+                            }
+                        }
+                        else
+                        {
+                            lblMensaje.Text = "Usuario o Constraseña Incorrectos";
+                        }
 
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        lblMensaje.Text = "Usuario o Constraseña Incorrectos";
-                    }
+                        lblMensaje.Text = "Usuario o Constraseña Incorrectos o Cuenta Inactiva";
+                        System.Diagnostics.Debug.WriteLine($"Error: {ex.Message}");
+                    }     
                 }
             }
             catch (Exception ex) {
