@@ -7,11 +7,6 @@ using System.Web.UI.WebControls;
 using System.Configuration;
 using DataModels;
 using LinqToDB;
-using System.Data.SqlClient;
-using System.Data;
-using LinqToDB.DataProvider.SqlServer;
-using LinqToDB.Data;
-
 
 namespace Sistema_Reservaciones_G1.Pages
 {
@@ -30,29 +25,26 @@ namespace Sistema_Reservaciones_G1.Pages
             {
                 using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
                 {
-                    var persona.Value = db.SpAutenticarUsuario(Email, Clave).FirstOrDefault;
-                    idPersona.Value = persona.idPersona
-                }
-                conexion.Open();
-                string consulta = "SELECT * FROM PERSONA WHERE email='" + email + "' and clave='" + clave + "'";
-                SqlCommand comando = new SqlCommand(consulta, conexion);
-                SqlDataReader read;
-                read = comando.ExecuteReader();
-                if (read.HasRows == true)
-                {
-                    Session["UsuarioID"] = read["idPersona"];
-                    Session["NombreCompleto"] = read["nombreCompleto"];
-                    Session["Email"] = read["email"];
-                    Session["EsEmpleado"] = read["esEmpleado"];
-                    Response.Redirect("~/Pages/MisReservaciones.aspx");
-                }
-                else {
-                    lblMensaje.Text = "Usuario o Constraseña Incorrectos";
+                    var persona = db.SpAutenticarUsuario(Email, Clave).FirstOrDefault();
+                    if (persona.Email.Equals(Email) && persona.Clave.Equals(Clave))
+                    {
+                        Session["idPersona"] = persona.IdPersona;
+                        Session["NombreCompleto"] = persona.NombreCompleto;
+                        Session["Email"] = persona.Email;
+                        Session["EsEmpleado"] = persona.EsEmpleado;
+                        Response.Redirect("~/Pages/MisReservaciones.aspx");
+
+                    }
+                    else
+                    {
+                        lblMensaje.Text = "Usuario o Constraseña Incorrectos";
+                    }
                 }
             }
-            catch { }
-
-            
+            catch (Exception ex) {
+                lblMensaje.Text = "Ocurrió un error al intentar iniciar sesión. Por favor, intente nuevamente.";
+                System.Diagnostics.Debug.WriteLine($"Error: {ex.Message}");
+            }
         }
     }
 }

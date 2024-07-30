@@ -15,11 +15,11 @@ namespace Sistema_Reservaciones_G1.Pages
         string conn = ConfigurationManager.ConnectionStrings["MyDatabase"].ConnectionString;
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["UsuarioID"] == null)
+            if (Session["idPersona"] == null)
             {
                 Response.Redirect("~/Pages/Login.aspx");
             }
-            int idPersona = Convert.ToInt32(Session["UsuarioID"]);
+            int idPersona = Convert.ToInt32(Session["idPersona"]);
             if (!IsPostBack)
             {
                 try
