@@ -13,5 +13,10 @@ namespace Sistema_Reservaciones_G1.Pages
         {
 
         }
+
+        protected void btnFiltrar_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

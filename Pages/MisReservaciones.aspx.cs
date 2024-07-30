@@ -43,8 +43,8 @@ namespace Sistema_Reservaciones_G1.Pages
                     }
                 }
                 catch (Exception ex) 
-                { 
-            
+                {
+                    System.Diagnostics.Debug.WriteLine($"Error: {ex.Message}");
                 }
             }
            

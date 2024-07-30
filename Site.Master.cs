@@ -21,6 +21,17 @@ namespace Sistema_Reservaciones_G1
                 hlGestionarReservaciones.Visible = false;
                 hlGestionarHabitaciones.Visible = false;
             }
+            if (Session["NombreCompleto"] != null)
+            {
+                lblNombreUsuario.Text = Session["NombreCompleto"].ToString();
+            }
+        }
+
+        protected void btnLogout_Click(object sender, EventArgs e)
+        {
+            Session.Clear();
+            Session.Abandon();
+            Response.Redirect("~/Pages/Login.aspx");
         }
     }
 }
