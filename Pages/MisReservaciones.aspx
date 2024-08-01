@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="MisReservaciones.aspx.cs" Inherits="Sistema_Reservaciones_G1.Pages.MisReservaciones" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <h1>Mis Reservaciones</h1>
-    <a href="~/Pages/CrearReservacion.aspx">Nueva Reservación</a>
+    <a href="CrearReservacion.aspx">Nueva Reservación</a>
     <asp:GridView ID="gvMisReservaciones" 
             runat="server" 
             AutoGenerateColumns="false" 

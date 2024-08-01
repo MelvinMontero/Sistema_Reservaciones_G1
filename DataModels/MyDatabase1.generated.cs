@@ -228,6 +228,48 @@ namespace DataModels
 
 		#endregion
 
+		#region SpConsultarHabitaciones
+
+		public static IEnumerable<SpConsultarHabitacionesResult> SpConsultarHabitaciones(this PvProyectoFinalDB dataConnection, int? @IdHotel, int? @CapacidadRequerida)
+		{
+			var parameters = new []
+			{
+				new DataParameter("@IdHotel",            @IdHotel,            LinqToDB.DataType.Int32),
+				new DataParameter("@CapacidadRequerida", @CapacidadRequerida, LinqToDB.DataType.Int32)
+			};
+
+			return dataConnection.QueryProc<SpConsultarHabitacionesResult>("[dbo].[spConsultarHabitaciones]", parameters);
+		}
+
+		public partial class SpConsultarHabitacionesResult
+		{
+			[Column("idHabitacion")    ] public int    IdHabitacion     { get; set; }
+			[Column("numeroHabitacion")] public string NumeroHabitacion { get; set; }
+			[Column("capacidadMaxima") ] public int    CapacidadMaxima  { get; set; }
+			[Column("descripcion")     ] public string Descripcion      { get; set; }
+			[Column("estado")          ] public char   Estado           { get; set; }
+		}
+
+		#endregion
+
+		#region SpConsultarHotel
+
+		public static IEnumerable<Hotel> SpConsultarHotel(this PvProyectoFinalDB dataConnection)
+		{
+			return dataConnection.QueryProc<Hotel>("[dbo].[spConsultarHotel]");
+		}
+
+		#endregion
+
+		#region SpConsultarPersona
+
+		public static IEnumerable<Persona> SpConsultarPersona(this PvProyectoFinalDB dataConnection)
+		{
+			return dataConnection.QueryProc<Persona>("[dbo].[spConsultarPersona]");
+		}
+
+		#endregion
+
 		#region SpMisReservaciones
 
 		public static IEnumerable<SpMisReservacionesResult> SpMisReservaciones(this PvProyectoFinalDB dataConnection, int? @idPersona)

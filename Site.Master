@@ -57,7 +57,17 @@
                             <asp:Label ID="lblNombreUsuario" runat="server" CssClass="nav-link" Text=""></asp:Label>
                         </li>
                         <li class="nav-item">
-                            <asp:Button ID="btnLogout" runat="server" Text="Cerrar Sesión" CssClass="nav-link-button" OnClick="btnLogout_Click" />
+                            <asp:Button ID="btnLogout" runat="server" Text="" OnClick="btnLogout_Click" OnClientClick="return logout();" />
+                            <script type="text/javascript">
+                                function logout() {
+                                    var form = document.forms[0];
+                                    if (form) {
+                                        form.onsubmit = null; 
+                                    }
+                                    window.location.href = '<%= ResolveUrl("~/Pages/Login.aspx") %>';
+                                    return false;
+                                }
+                            </script>
                         </li>
                     </ul>
                 </div>
@@ -68,7 +78,7 @@
             </asp:ContentPlaceHolder>
             <hr />
             <footer>
-                <p>&copy; <%: DateTime.Now.Year %> - Mi aplicación ASP.NET</p>
+                <p>&copy; <%: DateTime.Now.Year %></p>
             </footer>
         </div>
     </form>

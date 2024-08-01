@@ -23,27 +23,19 @@
     padding-right: 10px;
 }
 
-.nav-link-button {
+.navbar-nav .nav-item .nav-link-button,
+.navbar-nav .nav-item .nav-link-button:hover {
     background: none;
     border: none;
-    color: #007bff;
+    color: #333; /* Gris oscuro para un buen contraste con el blanco */
     text-decoration: none;
     font-size: 1rem;
     cursor: pointer;
     padding: 0;
-    display: inline-block; 
+    display: inline-block;
 }
 
-.nav-link-button:hover {
-    color: #0056b3;
+.navbar-nav .nav-item .nav-link-button:hover {
+    color: #000;
     text-decoration: underline;
 }
-
-.navbar-nav .nav-item {
-    display: flex;
-    align-items: center;
-}
-
-    .navbar-nav .nav-item .nav-link-button {
-        margin: auto;
-    }
