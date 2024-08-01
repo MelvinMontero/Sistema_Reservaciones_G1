@@ -15,31 +15,39 @@ namespace Sistema_Reservaciones_G1.Pages
         string conn = ConfigurationManager.ConnectionStrings["MyDatabase"].ConnectionString;
         protected void Page_Load(object sender, EventArgs e)
         {
-            //int idPersona = Convert.ToInt32(Session["idPersona"]);
-            int idPersona = 1;
-            try
+            if (Session["idPersona"] == null)
             {
-                using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
+                Response.Redirect("~/Pages/Login.aspx");
+            }
+            int idPersona = Convert.ToInt32(Session["idPersona"]);
+            if (!IsPostBack)
+            {
+                try
                 {
-                    var lista = db.SpMisReservaciones(1);
-                    var listaConEstado = lista.Select(r => new
+                    using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
                     {
-                        r._Reservación,
-                        r.Hotel,
-                        fechaEntrada = r.FechaEntrada.ToString("dd/MM/yyyy"),
-                        fechaSalida = r.FechaSalida.ToString("dd/MM/yyyy"),
-                        costo = r.Costo.ToString("C2"),
-                        estado = ObtenerEstado(r.Estado, r.FechaEntrada, r.FechaSalida)
-                    }).ToList();
-
-                    gvMisReservaciones.DataSource = listaConEstado;
-                    gvMisReservaciones.DataBind();
+                        var lista = db.SpMisReservaciones(idPersona)
+                            .ToList()
+                            .Select(res => new
+                            {
+                                res.IdReservacion,
+                                res.Nombre,
+                                res.FechaEntrada,
+                                res.FechaSalida,
+                                res.CostoTotal,
+                                Estado = ObtenerEstado(res.Estado, res.FechaEntrada.Value, res.FechaSalida.Value)
+                            })
+                            .ToList();
+                        gvMisReservaciones.DataSource = lista;
+                        gvMisReservaciones .DataBind();
+                    }
+                }
+                catch (Exception ex) 
+                {
+                    System.Diagnostics.Debug.WriteLine($"Error: {ex.Message}");
                 }
             }
-            catch (Exception ex) 
-            { 
-            
-            }
+           
         }
         private string ObtenerEstado(char estado, DateTime fechaEntrada, DateTime fechaSalida)
         {

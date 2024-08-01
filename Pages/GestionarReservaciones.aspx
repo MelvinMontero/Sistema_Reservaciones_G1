@@ -13,7 +13,7 @@
          </div>
 
    <%-- la misma de la otra pagina  --%>
-<a href="~/Pages/CrearReservacion.aspx">Nueva Reservación</a>
+<a href="CrearReservacion.aspx">Nueva Reservación</a>
 <asp:GridView ID="gvMisReservaciones" runat="server" AutoGenerateColumns="false" CssClass="grid-view">
     <Columns>
         <asp:BoundField DataField="idReservacion" HeaderText="# Reservacion" SortExpression="idReservacion">

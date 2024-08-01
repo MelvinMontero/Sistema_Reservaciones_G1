@@ -207,6 +207,69 @@ namespace DataModels
 
 	public static partial class PvProyectoFinalDBStoredProcedures
 	{
+		#region SpAutenticarUsuario
+
+		public static IEnumerable<Persona> SpAutenticarUsuario(this PvProyectoFinalDB dataConnection, string @email, string @clave)
+		{
+			var parameters = new []
+			{
+				new DataParameter("@email", @email, LinqToDB.DataType.VarChar)
+				{
+					Size = 150
+				},
+				new DataParameter("@clave", @clave, LinqToDB.DataType.VarChar)
+				{
+					Size = 15
+				}
+			};
+
+			return dataConnection.QueryProc<Persona>("[dbo].[sp_Autenticar_Usuario]", parameters);
+		}
+
+		#endregion
+
+		#region SpConsultarHabitaciones
+
+		public static IEnumerable<SpConsultarHabitacionesResult> SpConsultarHabitaciones(this PvProyectoFinalDB dataConnection, int? @IdHotel, int? @CapacidadRequerida)
+		{
+			var parameters = new []
+			{
+				new DataParameter("@IdHotel",            @IdHotel,            LinqToDB.DataType.Int32),
+				new DataParameter("@CapacidadRequerida", @CapacidadRequerida, LinqToDB.DataType.Int32)
+			};
+
+			return dataConnection.QueryProc<SpConsultarHabitacionesResult>("[dbo].[spConsultarHabitaciones]", parameters);
+		}
+
+		public partial class SpConsultarHabitacionesResult
+		{
+			[Column("idHabitacion")    ] public int    IdHabitacion     { get; set; }
+			[Column("numeroHabitacion")] public string NumeroHabitacion { get; set; }
+			[Column("capacidadMaxima") ] public int    CapacidadMaxima  { get; set; }
+			[Column("descripcion")     ] public string Descripcion      { get; set; }
+			[Column("estado")          ] public char   Estado           { get; set; }
+		}
+
+		#endregion
+
+		#region SpConsultarHotel
+
+		public static IEnumerable<Hotel> SpConsultarHotel(this PvProyectoFinalDB dataConnection)
+		{
+			return dataConnection.QueryProc<Hotel>("[dbo].[spConsultarHotel]");
+		}
+
+		#endregion
+
+		#region SpConsultarPersona
+
+		public static IEnumerable<Persona> SpConsultarPersona(this PvProyectoFinalDB dataConnection)
+		{
+			return dataConnection.QueryProc<Persona>("[dbo].[spConsultarPersona]");
+		}
+
+		#endregion
+
 		#region SpMisReservaciones
 
 		public static IEnumerable<SpMisReservacionesResult> SpMisReservaciones(this PvProyectoFinalDB dataConnection, int? @idPersona)
@@ -221,13 +284,12 @@ namespace DataModels
 
 		public partial class SpMisReservacionesResult
 		{
-			[Column("# Reservación")] public int      _Reservación { get; set; }
-			                          public string   Cliente      { get; set; }
-			                          public string   Hotel        { get; set; }
-			[Column("Fecha Entrada")] public DateTime FechaEntrada { get; set; }
-			[Column("Fecha Salida") ] public DateTime FechaSalida  { get; set; }
-			                          public decimal  Costo        { get; set; }
-			                          public char     Estado       { get; set; }
+			[Column("idReservacion")] public int       IdReservacion { get; set; }
+			[Column("nombre")       ] public string    Nombre        { get; set; }
+			[Column("fechaEntrada") ] public DateTime? FechaEntrada  { get; set; }
+			[Column("fechaSalida")  ] public DateTime? FechaSalida   { get; set; }
+			[Column("costoTotal")   ] public decimal   CostoTotal    { get; set; }
+			[Column("estado")       ] public char      Estado        { get; set; }
 		}
 
 		#endregion
