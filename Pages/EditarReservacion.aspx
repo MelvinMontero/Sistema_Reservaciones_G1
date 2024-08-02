@@ -66,7 +66,10 @@
 
     <div>
         <asp:Button ID="ButtonGuarda" runat="server" Text="Guardar" OnClick="ButtonGuarda_Click" />
+        <%-- Pagina 29 boton guardar --%>
+
         <asp:Button ID="ButtonRegresar" runat="server" Text="Regresar" OnClick="ButtonRegresar_Click" />
+        <%-- Pagina 30 boton cancelar --%>
     </div>
 
 
