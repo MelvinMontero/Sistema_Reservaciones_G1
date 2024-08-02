@@ -42,13 +42,31 @@ namespace Sistema_Reservaciones_G1.Pages
         protected global::System.Web.UI.WebControls.TextBox Textcliente;
 
         /// <summary>
-        /// TextBox1 control.
+        /// TextFechaentrada control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox1;
+        protected global::System.Web.UI.WebControls.TextBox TextFechaentrada;
+
+        /// <summary>
+        /// revFechaEntrada control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revFechaEntrada;
+
+        /// <summary>
+        /// cvFechaEntrada control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CustomValidator cvFechaEntrada;
 
         /// <summary>
         /// TextBox2 control.
@@ -58,6 +76,24 @@ namespace Sistema_Reservaciones_G1.Pages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TextBox2;
+
+        /// <summary>
+        /// revFechaSalida control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revFechaSalida;
+
+        /// <summary>
+        /// cvFechaSalida control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CustomValidator cvFechaSalida;
 
         /// <summary>
         /// ddlClientes control.

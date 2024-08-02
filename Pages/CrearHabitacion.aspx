@@ -39,5 +39,6 @@
           <asp:Button ID="ButtonGuardarcrearhabitacion" runat="server" Text="Guardar" OnClick="ButtonGuardarcrearhabitacion_Click" />
            <asp:Button ID="ButtonRegresar" runat="server" Text="Regresar" OnClick="ButtonRegresar_Click"/>
       </div>
+   <%-- Faltan las validaciones a los botones --%>
       
 </asp:Content>
