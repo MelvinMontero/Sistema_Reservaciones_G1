@@ -264,6 +264,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="LinqToDB.Templates\CopyMe.SqlServer.tt.txt" />
+    <Content Include="Pages\CrearHabitacion.aspx" />
     <Content Include="Pages\CrearReservacion.aspx" />
     <Content Include="Pages\Detalle.aspx" />
     <Content Include="Pages\EditarReservacion.aspx" />
@@ -380,6 +381,13 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\CrearHabitacion.aspx.cs">
+      <DependentUpon>CrearHabitacion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\CrearHabitacion.aspx.designer.cs">
+      <DependentUpon>CrearHabitacion.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\CrearReservacion.aspx.cs">
       <DependentUpon>CrearReservacion.aspx</DependentUpon>
