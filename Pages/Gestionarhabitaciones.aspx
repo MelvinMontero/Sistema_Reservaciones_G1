@@ -4,7 +4,7 @@
     <h1>Lista de habitaciones</h1>
     <link rel="stylesheet" type="text/css" href="~/Styles/site.css" />
     <%-- falta el estilo cebra y las validaciones --%>
-<a href="CrearHabitacion.aspx">Crear habitacion</a>
+<a href="CrearHabitacion.aspx" class="btn btn-primary">Crear habitacion</a>
 <asp:GridView ID="gvListaHabitaciones"  runat="server" AutoGenerateColumns="false" CssClass="grid-view" >
     
     <Columns>

@@ -33,7 +33,6 @@ namespace Sistema_Reservaciones_G1
 
         protected void btnLogout_Click(object sender, EventArgs e)
         {
-            // El botón redirige al login y limpia la sesión si está activa
             Session.Clear();
             Session.Abandon();
             Response.Redirect("~/Pages/Login.aspx");

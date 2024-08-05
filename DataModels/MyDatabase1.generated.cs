@@ -272,6 +272,24 @@ namespace DataModels
 
 		#endregion
 
+		#region SpCrearBitacora
+
+		public static int SpCrearBitacora(this PvProyectoFinalDB dataConnection, int? @idPersona, string @accionRealizada)
+		{
+			var parameters = new []
+			{
+				new DataParameter("@idPersona",       @idPersona,       LinqToDB.DataType.Int32),
+				new DataParameter("@accionRealizada", @accionRealizada, LinqToDB.DataType.VarChar)
+				{
+					Size = 25
+				}
+			};
+
+			return dataConnection.ExecuteProc("[dbo].[spCrearBitacora]", parameters);
+		}
+
+		#endregion
+
 		#region SpCrearReservacion
 
 		public static int SpCrearReservacion(this PvProyectoFinalDB dataConnection, int? @idPersona, int? @idHabitacion, DateTime? @fechaEntrada, DateTime? @fechaSalida, int? @numeroAdultos, int? @numeroNinhos, int? @totalDiasReservacion, decimal? @costoPorCadaAdulto, decimal? @costoPorCadaNinho, decimal? @costoTotal, DateTime? @fechaCreacion, char? @estado)

@@ -31,7 +31,7 @@
             <asp:RangeValidator ID="rvNumAdultos" runat="server" ControlToValidate="txtNumAdultos" MinimumValue="1" MaximumValue="100" Type="Integer" ErrorMessage="El número de adultos debe ser mayor a 0" CssClass="text-danger" Display="Dynamic" /><br />
             <span>Número de Niños</span><br />
             <asp:TextBox ID="txtNumNinhos" runat="server" CssClass="form-control"></asp:TextBox>
-            <asp:RequiredFieldValidator ID="rfvNumNinhos" runat="server" ControlToValidate="txtNumNinhos" ErrorMessage="El número de niños es obligatorio" CssClass="text-danger" Display="Dynamic" />
+            <asp:RequiredFieldValidator ID="rfvNumNinhos" runat="server" ControlToValidate="txtNumNinhos" ErrorMessage="El número de niños es obligatorio. Si no lo requiere, ingrese 0" CssClass="text-danger" Display="Dynamic" />
             <asp:RangeValidator ID="rvNumNinhos" runat="server" ControlToValidate="txtNumNinhos" MinimumValue="0" MaximumValue="100" Type="Integer" ErrorMessage="El número de niños debe ser mayor o igual a 0" CssClass="text-danger" Display="Dynamic" /><br />
         </div>
     </div>

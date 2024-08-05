@@ -14,7 +14,7 @@
         <asp:RequiredFieldValidator ID="rfvClave" runat="server" ControlToValidate="pswclave" ErrorMessage="El campo Clave es obligatorio." CssClass="text-danger" Display="Dynamic" />
     </div>
     <div>
-        <asp:Button ID="btnLogin" runat="server" Text="Login" OnClick="btnLogin_Click" CssClass="btn btn-primary" />
+        <asp:Button ID="btnLogin" runat="server" Text="Ingresar" OnClick="btnLogin_Click" CssClass="btn btn-primary" />
     </div>
     <asp:Label ID="lblMensaje" runat="server" Text="" CssClass="text-danger"></asp:Label>
 </asp:Content>

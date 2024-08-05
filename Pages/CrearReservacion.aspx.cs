@@ -88,23 +88,9 @@ namespace Sistema_Reservaciones_G1.Pages
         protected void ValidateFechaEntrada(object source, ServerValidateEventArgs args)
         {
             DateTime fechaEntrada;
-            if (DateTime.TryParseExact(args.Value, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out fechaEntrada))
+            if (DateTime.TryParseExact(args.Value, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out fechaEntrada))
             {
-                args.IsValid = fechaEntrada > DateTime.Now;
-            }
-            else
-            {
-                args.IsValid = false;
-            }
-        }
-        protected void ValidateFechaSalida(object source, ServerValidateEventArgs args)
-        {
-            DateTime fechaEntrada;
-            DateTime fechaSalida;
-            if (DateTime.TryParseExact(txtFechaEntrada.Text, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out fechaEntrada) &&
-                DateTime.TryParseExact(args.Value, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out fechaSalida))
-            {
-                args.IsValid = fechaSalida > fechaEntrada;
+                args.IsValid = fechaEntrada.Date >= DateTime.Now.Date;
             }
             else
             {
@@ -112,6 +98,20 @@ namespace Sistema_Reservaciones_G1.Pages
             }
         }
 
+        protected void ValidateFechaSalida(object source, ServerValidateEventArgs args)
+        {
+            DateTime fechaEntrada;
+            DateTime fechaSalida;
+            if (DateTime.TryParseExact(txtFechaEntrada.Text, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out fechaEntrada) &&
+                DateTime.TryParseExact(args.Value, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out fechaSalida))
+            {
+                args.IsValid = fechaSalida.Date > fechaEntrada.Date;
+            }
+            else
+            {
+                args.IsValid = false;
+            }
+        }
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
             if (Page.IsValid)
@@ -137,44 +137,40 @@ namespace Sistema_Reservaciones_G1.Pages
                         var habitacion = db.SpConsultarHabitaciones(idHotel,totalPersonas).FirstOrDefault();
                         if (habitacion == null) 
                         {
-                            
+                            ScriptManager.RegisterStartupScript(this, GetType(), "alertMessage",
+                                "alert('No hay habitaciones disponibles con la capacidad requerida." +
+                                " Por favor, cambie el número de personas o seleccione otro hotel.');", true);   
+                        }
+                        else
+                        {
+                            int idHabitacion = habitacion.IdHabitacion;
+                            string nHabitacion = habitacion.NumeroHabitacion;
+                            int capacidadMaxima = habitacion.CapacidadMaxima;
+                            decimal costoPorCadaAdulto = habitacion.CostoPorCadaAdulto;
+                            decimal costoPorCadaNinho = habitacion.CostoPorCadaNinho;
+                            costoTotal = totalDiasReservacion * ((numAdultos * costoPorCadaAdulto) + (numNinos * costoPorCadaNinho));
+                            DateTime fechaCreacion = DateTime.Now;
+                            char estado = 'A';
+                            db.SpCrearReservacion(idPersona,
+                                idHabitacion,
+                                fechaEntrada,
+                                fechaSalida,
+                                numAdultos,
+                                numNinos,
+                                totalDiasReservacion,
+                                costoPorCadaAdulto,
+                                costoPorCadaNinho,
+                                costoTotal,
+                                fechaCreacion,
+                                estado);
+                            db.SpCrearBitacora(idPersona, "CREADA");
+                            Response.Redirect("~/Pages/Exito.aspx?mensaje=Reservación%20creada%20con%20éxito.");
 
                         }
-                        int idHabitacion = habitacion.IdHabitacion;
-                        string nHabitacion = habitacion.NumeroHabitacion;
-                        int capacidadMaxima = habitacion.CapacidadMaxima;
-                        decimal costoPorCadaAdulto = habitacion.CostoPorCadaAdulto;
-                        decimal costoPorCadaNinho = habitacion.CostoPorCadaNinho;
-                        costoTotal = totalDiasReservacion * ((numAdultos * costoPorCadaAdulto) + (numNinos * costoPorCadaNinho));
-                        DateTime fechaCreacion = DateTime.Now;
-                        char estado = 'A';
-                        db.SpCrearReservacion(idPersona, 
-                            idHabitacion, 
-                            fechaEntrada, 
-                            fechaSalida, 
-                            numAdultos, 
-                            numNinos, 
-                            totalDiasReservacion,
-                            costoPorCadaAdulto, 
-                            costoPorCadaNinho, 
-                            costoTotal, 
-                            fechaCreacion, 
-                            estado);
-
-
-                        db.InsertBitacora(idPersona, "CREADA");
-
-
-                        string urlRedirect = (Session["EsEmpleado"] != null && (bool)Session["EsEmpleado"])
-                            ? "~/Pages/GestionarReservaciones.aspx"
-                            : "~/Pages/MisReservaciones.aspx";
-
-                        Response.Redirect(urlRedirect);
                     }
                 }
                 catch (Exception ex)
                 {
-                    // Manejo de excepciones y mensajes de error
                     Trace.Warn("Error al guardar la reserva", ex.Message);
                     ScriptManager.RegisterStartupScript(this, GetType(), "alertMessage", "alert('Se produjo un error al guardar la reservación.');", true);
                 }               
