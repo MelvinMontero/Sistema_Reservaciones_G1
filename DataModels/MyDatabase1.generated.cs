@@ -243,11 +243,13 @@ namespace DataModels
 
 		public partial class SpConsultarHabitacionesResult
 		{
-			[Column("idHabitacion")    ] public int    IdHabitacion     { get; set; }
-			[Column("numeroHabitacion")] public string NumeroHabitacion { get; set; }
-			[Column("capacidadMaxima") ] public int    CapacidadMaxima  { get; set; }
-			[Column("descripcion")     ] public string Descripcion      { get; set; }
-			[Column("estado")          ] public char   Estado           { get; set; }
+			[Column("idHabitacion")      ] public int     IdHabitacion       { get; set; }
+			[Column("numeroHabitacion")  ] public string  NumeroHabitacion   { get; set; }
+			[Column("capacidadMaxima")   ] public int     CapacidadMaxima    { get; set; }
+			[Column("descripcion")       ] public string  Descripcion        { get; set; }
+			[Column("estado")            ] public char    Estado             { get; set; }
+			[Column("costoPorCadaAdulto")] public decimal CostoPorCadaAdulto { get; set; }
+			[Column("costoPorCadaNinho") ] public decimal CostoPorCadaNinho  { get; set; }
 		}
 
 		#endregion
@@ -266,6 +268,34 @@ namespace DataModels
 		public static IEnumerable<Persona> SpConsultarPersona(this PvProyectoFinalDB dataConnection)
 		{
 			return dataConnection.QueryProc<Persona>("[dbo].[spConsultarPersona]");
+		}
+
+		#endregion
+
+		#region SpCrearReservacion
+
+		public static int SpCrearReservacion(this PvProyectoFinalDB dataConnection, int? @idPersona, int? @idHabitacion, DateTime? @fechaEntrada, DateTime? @fechaSalida, int? @numeroAdultos, int? @numeroNinhos, int? @totalDiasReservacion, decimal? @costoPorCadaAdulto, decimal? @costoPorCadaNinho, decimal? @costoTotal, DateTime? @fechaCreacion, char? @estado)
+		{
+			var parameters = new []
+			{
+				new DataParameter("@idPersona",            @idPersona,            LinqToDB.DataType.Int32),
+				new DataParameter("@idHabitacion",         @idHabitacion,         LinqToDB.DataType.Int32),
+				new DataParameter("@fechaEntrada",         @fechaEntrada,         LinqToDB.DataType.DateTime),
+				new DataParameter("@fechaSalida",          @fechaSalida,          LinqToDB.DataType.DateTime),
+				new DataParameter("@numeroAdultos",        @numeroAdultos,        LinqToDB.DataType.Int32),
+				new DataParameter("@numeroNinhos",         @numeroNinhos,         LinqToDB.DataType.Int32),
+				new DataParameter("@totalDiasReservacion", @totalDiasReservacion, LinqToDB.DataType.Int32),
+				new DataParameter("@costoPorCadaAdulto",   @costoPorCadaAdulto,   LinqToDB.DataType.Decimal),
+				new DataParameter("@costoPorCadaNinho",    @costoPorCadaNinho,    LinqToDB.DataType.Decimal),
+				new DataParameter("@costoTotal",           @costoTotal,           LinqToDB.DataType.Decimal),
+				new DataParameter("@fechaCreacion",        @fechaCreacion,        LinqToDB.DataType.DateTime),
+				new DataParameter("@estado",               @estado,               LinqToDB.DataType.VarChar)
+				{
+					Size = 1
+				}
+			};
+
+			return dataConnection.ExecuteProc("[dbo].[spCrearReservacion]", parameters);
 		}
 
 		#endregion

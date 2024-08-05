@@ -115,49 +115,69 @@ namespace Sistema_Reservaciones_G1.Pages
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
             if (Page.IsValid)
-            {
-                if (Page.IsValid)
+            {             
+                try
                 {
-                    try
+                    int idPersona = (int)Session["idPersona"];
+                    int idHotel = int.Parse(drdHotel.SelectedValue);
+                    int idCliente = int.Parse(drdCliente.SelectedValue);
+                    DateTime fechaEntrada = DateTime.Parse(txtFechaEntrada.Text);
+                    DateTime fechaSalida = DateTime.Parse(txtFechaSalida.Text);
+                    int numAdultos = int.Parse(txtNumAdultos.Text);
+                    int numNinos = int.Parse(txtNumNinhos.Text);
+                    int totalPersonas = numAdultos + numNinos;
+                    int totalDiasReservacion = (fechaSalida - fechaEntrada).Days;
+                    decimal costoTotal = 0;
+                    if (totalDiasReservacion == 0)
                     {
-                        int idHotel = int.Parse(drdHotel.SelectedValue);
-                        int idCliente = int.Parse(drdCliente.SelectedValue);
-                        DateTime fechaEntrada = DateTime.Parse(txtFechaEntrada.Text);
-                        DateTime fechaSalida = DateTime.Parse(txtFechaSalida.Text);
-                        int numAdultos = int.Parse(txtNumAdultos.Text);
-                        int numNinos = int.Parse(txtNumNinhos.Text);
-                        int totalPersonas = numAdultos + numNinos;
-
-                        
-                        using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
-                        {
-                            var habitacion = db.SpConsultarHabitaciones(idHotel,totalPersonas).FirstOrDefault();
-                            if (habitacion != null) 
-                            {
-
-                            }
-                            else
-                            {
-
-                            }
-                            int idPersona = (int)Session["idPersona"];
-                            db.InsertBitacora(idPersona, "CREADA");
-
-                            // Redirigir a la página de éxito
-                            string urlRedirect = (Session["EsEmpleado"] != null && (bool)Session["EsEmpleado"])
-                                ? "~/Pages/GestionarReservaciones.aspx"
-                                : "~/Pages/MisReservaciones.aspx";
-
-                            Response.Redirect(urlRedirect);
-                        }
+                        totalDiasReservacion = 1;
                     }
-                    catch (Exception ex)
+                    using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
                     {
-                        // Manejo de excepciones y mensajes de error
-                        Trace.Warn("Error al guardar la reserva", ex.Message);
-                        ScriptManager.RegisterStartupScript(this, GetType(), "alertMessage", "alert('Se produjo un error al guardar la reservación.');", true);
+                        var habitacion = db.SpConsultarHabitaciones(idHotel,totalPersonas).FirstOrDefault();
+                        if (habitacion == null) 
+                        {
+                            
+
+                        }
+                        int idHabitacion = habitacion.IdHabitacion;
+                        string nHabitacion = habitacion.NumeroHabitacion;
+                        int capacidadMaxima = habitacion.CapacidadMaxima;
+                        decimal costoPorCadaAdulto = habitacion.CostoPorCadaAdulto;
+                        decimal costoPorCadaNinho = habitacion.CostoPorCadaNinho;
+                        costoTotal = totalDiasReservacion * ((numAdultos * costoPorCadaAdulto) + (numNinos * costoPorCadaNinho));
+                        DateTime fechaCreacion = DateTime.Now;
+                        char estado = 'A';
+                        db.SpCrearReservacion(idPersona, 
+                            idHabitacion, 
+                            fechaEntrada, 
+                            fechaSalida, 
+                            numAdultos, 
+                            numNinos, 
+                            totalDiasReservacion,
+                            costoPorCadaAdulto, 
+                            costoPorCadaNinho, 
+                            costoTotal, 
+                            fechaCreacion, 
+                            estado);
+
+
+                        db.InsertBitacora(idPersona, "CREADA");
+
+
+                        string urlRedirect = (Session["EsEmpleado"] != null && (bool)Session["EsEmpleado"])
+                            ? "~/Pages/GestionarReservaciones.aspx"
+                            : "~/Pages/MisReservaciones.aspx";
+
+                        Response.Redirect(urlRedirect);
                     }
                 }
+                catch (Exception ex)
+                {
+                    // Manejo de excepciones y mensajes de error
+                    Trace.Warn("Error al guardar la reserva", ex.Message);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alertMessage", "alert('Se produjo un error al guardar la reservación.');", true);
+                }               
             }
         }
         protected void btnCancelar_Click(object sender, EventArgs e)
