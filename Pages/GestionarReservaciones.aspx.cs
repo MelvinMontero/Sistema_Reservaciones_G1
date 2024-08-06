@@ -15,14 +15,40 @@ namespace Sistema_Reservaciones_G1.Pages
         string conn = ConfigurationManager.ConnectionStrings["MyDatabase"].ConnectionString;
         protected void Page_Load(object sender, EventArgs e)
         {
-            /* if (Session["idPersona"] == null)
-             {
+            if (Session["idPersona"] == null)
+            {
                  Response.Redirect("~/Pages/Login.aspx");
-             } */
+            }
             if (!IsPostBack)
             {
                 CargarClientes();
                 CargarReservaciones();
+            }
+        }
+        private void CargarClientes()
+        {
+            try
+            {
+                var lista = new List<ListItem>
+                {
+                    new ListItem("Seleccione un cliente", "")
+                };
+                using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
+                {
+                    var query = db.SpConsultarPersona()
+                        .OrderBy(p => p.NombreCompleto)
+                        .Select(p => new ListItem(p.NombreCompleto, p.IdPersona.ToString()))
+                        .ToList();
+                    lista.AddRange(query);
+                }
+                ddlClientes.DataSource = lista;
+                ddlClientes.DataTextField = "Text";
+                ddlClientes.DataValueField = "Value";
+                ddlClientes.DataBind();
+            }
+            catch (Exception ex)
+            {
+                Trace.Warn("Error al cargar clientes", ex.Message);
             }
         }
         private void CargarReservaciones()
@@ -78,19 +104,19 @@ namespace Sistema_Reservaciones_G1.Pages
         }
         protected void btnFiltrar_Click(object sender, EventArgs e)
         {
-            string clienteSeleccionado = ddlClientes.SelectedValue;
+            string clienteSeleccionado = ddlClientes.SelectedItem.Text;
             DateTime fechaEntrada = DateTime.MinValue;
             DateTime fechaSalida = DateTime.MinValue;
 
-            if (DateTime.TryParseExact(txtFechaEntrada.Text, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out fechaEntrada) &&
-                DateTime.TryParseExact(txtFechaSalida.Text, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out fechaSalida))
+            if (DateTime.TryParse(txtFechaEntrada.Text, out fechaEntrada) &&
+                DateTime.TryParse(txtFechaSalida.Text, out fechaSalida))
             {
                 if (fechaSalida >= fechaEntrada)
                 {
                     using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
                     {
                         var listaReservaciones = db.SpGestionarReservaciones()
-                            .Where(r => (string.IsNullOrEmpty(clienteSeleccionado) || r.NombreCompleto == clienteSeleccionado) &&
+                            .Where(r => (clienteSeleccionado == "Seleccione un cliente" || r.NombreCompleto == clienteSeleccionado) &&
                                         r.FechaEntrada >= fechaEntrada && r.FechaSalida <= fechaSalida)
                             .Select(x => new
                             {
@@ -117,36 +143,28 @@ namespace Sistema_Reservaciones_G1.Pages
                 lblMensaje.Text = "Las fechas deben estar en el formato dd/MM/yyyy.";
             }
 
-            txtFechaEntrada.Text = fechaEntrada.ToString("dd/MM/yyyy");
-            txtFechaSalida.Text = fechaSalida.ToString("dd/MM/yyyy");
-            ddlClientes.SelectedValue = clienteSeleccionado;
+            txtFechaEntrada.Text = fechaEntrada.ToString("yyyy-MM-dd");
+            txtFechaSalida.Text = fechaSalida.ToString("yyyy-MM-dd");
         }
-            private void CargarClientes()
+
+        protected void ValidateFechaSalida(object source, ServerValidateEventArgs args)
         {
-            try
+            DateTime fechaEntrada, fechaSalida;
+            if (DateTime.TryParse(txtFechaEntrada.Text, out fechaEntrada) && DateTime.TryParse(args.Value, out fechaSalida))
             {
-                var lista = new List<ListItem>
+                if (fechaSalida < fechaEntrada)
                 {
-                    new ListItem("Seleccione un cliente", "")
-                };
-                using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
-                {
-                    var query = db.SpConsultarPersona()
-                        .OrderBy(p => p.NombreCompleto)
-                        .Select(p => new ListItem(p.NombreCompleto, p.IdPersona.ToString()))
-                        .ToList();
-                    lista.AddRange(query);
+                    args.IsValid = false;
                 }
-                ddlClientes.DataSource = lista;
-                ddlClientes.DataTextField = "Text";
-                ddlClientes.DataValueField = "Value";
-                ddlClientes.DataBind();
+                else
+                {
+                    args.IsValid = true;
+                }
             }
-            catch (Exception ex)
+            else
             {
-                Trace.Warn("Error al cargar clientes", ex.Message);
+                args.IsValid = false;
             }
         }
-        
     }
 }

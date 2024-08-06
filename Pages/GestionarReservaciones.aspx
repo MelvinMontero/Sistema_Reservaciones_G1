@@ -1,37 +1,48 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="GestionarReservaciones.aspx.cs" Inherits="Sistema_Reservaciones_G1.Pages.GestionarReservaciones" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <h1>Gestionar Reservaciones</h1>
-     <div>
-            <h2>Gestionar reservaciones</h2>
-          <div class="form-row">
-            <div class="form-group">
-                <asp:DropDownList ID="ddlClientes" runat="server">
+<h1>Gestionar Reservaciones</h1>
+<div class="form-row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-3">
+                <asp:Label ID="LabelCliente" runat="server" Text="Cliente"></asp:Label>
+            </div>
+            <div class="col-md-3">
+                <asp:Label ID="Label1" runat="server" Text="Fecha de Entrada"></asp:Label>
+            </div>
+            <div class="col-md-3">
+                <asp:Label ID="Label2" runat="server" Text="Fecha de Salida"></asp:Label>
+            </div>
+            <div class="col-md-3">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <asp:DropDownList ID="ddlClientes" runat="server" CssClass="form-control">
                     <asp:ListItem Text="Seleccione un cliente" Value="0" />
                 </asp:DropDownList>
             </div>
-            <div class="form-group">
-                <span>Fecha de Entrada</span><br />
-                <asp:TextBox ID="txtFechaEntrada" runat="server" CssClass="form-control" />
+            <div class="col-md-3">
+                <asp:TextBox ID="txtFechaEntrada" runat="server" CssClass="form-control" TextMode="Date" />
                 <asp:RequiredFieldValidator ID="rfvFechaEntrada" runat="server" ControlToValidate="txtFechaEntrada" ErrorMessage="La fecha de entrada es obligatoria" CssClass="text-danger" Display="Dynamic" />
-                <asp:CompareValidator ID="cvFechaEntrada" runat="server" ControlToValidate="txtFechaEntrada" Operator="DataTypeCheck" Type="Date" ErrorMessage="Ingrese una fecha válida en formato dd/MM/yyyy" CssClass="text-danger" Display="Dynamic" />
-                <asp:CustomValidator ID="customFechaEntrada" runat="server" ControlToValidate="txtFechaEntrada" ErrorMessage="La fecha de entrada no puede ser menor o igual a la fecha actual" CssClass="text-danger" Display="Dynamic" OnServerValidate="ValidateFechaEntrada" />
             </div>
-            <div class="form-group">
-                <span>Fecha de Salida</span><br />
-                <asp:TextBox ID="txtFechaSalida" runat="server" CssClass="form-control" />
+            <div class="col-md-3">
+                <asp:TextBox ID="txtFechaSalida" runat="server" CssClass="form-control" TextMode="Date" />
                 <asp:RequiredFieldValidator ID="rfvFechaSalida" runat="server" ControlToValidate="txtFechaSalida" ErrorMessage="La fecha de salida es obligatoria" CssClass="text-danger" Display="Dynamic" />
-                <asp:CompareValidator ID="cvFechaSalida" runat="server" ControlToValidate="txtFechaSalida" Operator="DataTypeCheck" Type="Date" ErrorMessage="Ingrese una fecha válida en formato dd/MM/yyyy" CssClass="text-danger" Display="Dynamic" />
                 <asp:CustomValidator ID="customFechaSalida" runat="server" ControlToValidate="txtFechaSalida" ErrorMessage="La fecha de salida no puede ser menor que la fecha de entrada" CssClass="text-danger" Display="Dynamic" OnServerValidate="ValidateFechaSalida" />
             </div>
-            <div class="form-group">
-                <asp:Button ID="btnFiltrar" runat="server" Text="Filtrar" OnClick="btnFiltrar_Click" />
-                <asp:Label ID="lblMensaje" runat="server" ForeColor="Red"></asp:Label>
+            <div class="col-md-3 d-flex align-items-center">
+                <asp:Button ID="btnFiltrar" runat="server" Text="Filtrar" OnClick="btnFiltrar_Click" CssClass="btn btn-secondary" />
+                <asp:Label ID="lblMensaje" runat="server" ForeColor="Red" CssClass="ml-2"></asp:Label>
             </div>
         </div>
-            
     </div>
+</div>
     <div>
+        <div class="mt-1 mb-1">
         <a href="CrearReservacion.aspx" class="btn btn-primary">Nueva Reservación</a><br />
+         </div>     
         <div>  
             <asp:GridView ID="gvReservaciones" runat="server" AutoGenerateColumns="false" CssClass="grid-view"
                 AllowCustomPaging="True" 
@@ -75,11 +86,11 @@
                     </asp:BoundField>
                     <asp:TemplateField>
                         <ItemTemplate>
-                            <a href="/Detalle.aspx" class="btn btn-secondary">Consultar</a>
+                            <a href="Detalle.aspx" class="btn btn-secondary">Consultar</a>
                         </ItemTemplate>
                     </asp:TemplateField>
                 </Columns>
              </asp:GridView>
         </div>
-    </div>         
+    </div>          
 </asp:Content>

@@ -15,6 +15,33 @@ namespace Sistema_Reservaciones_G1.Pages
     {
 
         /// <summary>
+        /// Control LabelCliente.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelCliente;
+
+        /// <summary>
+        /// Control Label1.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label1;
+
+        /// <summary>
+        /// Control Label2.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label2;
+
+        /// <summary>
         /// Control ddlClientes.
         /// </summary>
         /// <remarks>
@@ -42,24 +69,6 @@ namespace Sistema_Reservaciones_G1.Pages
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvFechaEntrada;
 
         /// <summary>
-        /// Control cvFechaEntrada.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CompareValidator cvFechaEntrada;
-
-        /// <summary>
-        /// Control customFechaEntrada.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CustomValidator customFechaEntrada;
-
-        /// <summary>
         /// Control txtFechaSalida.
         /// </summary>
         /// <remarks>
@@ -76,15 +85,6 @@ namespace Sistema_Reservaciones_G1.Pages
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvFechaSalida;
-
-        /// <summary>
-        /// Control cvFechaSalida.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CompareValidator cvFechaSalida;
 
         /// <summary>
         /// Control customFechaSalida.
