@@ -318,6 +318,26 @@ namespace DataModels
 
 		#endregion
 
+		#region SpGestionarReservaciones
+
+		public static IEnumerable<SpGestionarReservacionesResult> SpGestionarReservaciones(this PvProyectoFinalDB dataConnection)
+		{
+			return dataConnection.QueryProc<SpGestionarReservacionesResult>("[dbo].[sp_GestionarReservaciones]");
+		}
+
+		public partial class SpGestionarReservacionesResult
+		{
+			[Column("idReservacion") ] public int       IdReservacion  { get; set; }
+			[Column("nombreCompleto")] public string    NombreCompleto { get; set; }
+			[Column("nombre")        ] public string    Nombre         { get; set; }
+			[Column("fechaEntrada")  ] public DateTime? FechaEntrada   { get; set; }
+			[Column("fechaSalida")   ] public DateTime? FechaSalida    { get; set; }
+			[Column("costoTotal")    ] public decimal   CostoTotal     { get; set; }
+			[Column("estado")        ] public char      Estado         { get; set; }
+		}
+
+		#endregion
+
 		#region SpMisReservaciones
 
 		public static IEnumerable<SpMisReservacionesResult> SpMisReservaciones(this PvProyectoFinalDB dataConnection, int? @idPersona)

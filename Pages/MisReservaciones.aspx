@@ -2,10 +2,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <h1>Mis Reservaciones</h1>
     <a href="CrearReservacion.aspx" class="btn btn-primary">Nueva Reservación</a>
-    <asp:GridView ID="gvMisReservaciones" 
-            runat="server" 
-            AutoGenerateColumns="false" 
-            CssClass="align-content-lg-center  header-center=bold item-center"         
+    <asp:GridView ID="gvMisReservaciones" runat="server" AutoGenerateColumns="false" CssClass="grid-view"
             AllowCustomPaging="True" 
             CellPadding="5" 
             GridLines="Both" 

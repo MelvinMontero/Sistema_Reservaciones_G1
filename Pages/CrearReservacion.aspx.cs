@@ -118,7 +118,6 @@ namespace Sistema_Reservaciones_G1.Pages
             {             
                 try
                 {
-                    int idPersona = (int)Session["idPersona"];
                     int idHotel = int.Parse(drdHotel.SelectedValue);
                     int idCliente = int.Parse(drdCliente.SelectedValue);
                     DateTime fechaEntrada = DateTime.Parse(txtFechaEntrada.Text);
@@ -151,7 +150,7 @@ namespace Sistema_Reservaciones_G1.Pages
                             costoTotal = totalDiasReservacion * ((numAdultos * costoPorCadaAdulto) + (numNinos * costoPorCadaNinho));
                             DateTime fechaCreacion = DateTime.Now;
                             char estado = 'A';
-                            db.SpCrearReservacion(idPersona,
+                            db.SpCrearReservacion(idCliente,
                                 idHabitacion,
                                 fechaEntrada,
                                 fechaSalida,
@@ -163,6 +162,7 @@ namespace Sistema_Reservaciones_G1.Pages
                                 costoTotal,
                                 fechaCreacion,
                                 estado);
+                            int idPersona = (int)Session["idPersona"];
                             db.SpCrearBitacora(idPersona, "CREADA");
                             Response.Redirect("~/Pages/Exito.aspx?mensaje=Reservación%20creada%20con%20éxito.");
 
