@@ -86,7 +86,7 @@
                     </asp:BoundField>
                     <asp:TemplateField>
                         <ItemTemplate>
-                            <a href="Detalle.aspx" class="btn btn-secondary">Consultar</a>
+                            <a href="Detalle.aspx?id=<%# Eval ("idReservacion") %>" class="btn btn-secondary">Consultar</a>
                         </ItemTemplate>
                     </asp:TemplateField>
                 </Columns>

@@ -7,6 +7,8 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Xml.Linq;
+using DataModels;
+using System.Web.Security;
 
 namespace Sistema_Reservaciones_G1
 {
@@ -35,6 +37,14 @@ namespace Sistema_Reservaciones_G1
         {
             Session.Clear();
             Session.Abandon();
+            if (Request.Cookies[FormsAuthentication.FormsCookieName] != null)
+            {
+                var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, string.Empty)
+                {
+                    Expires = DateTime.Now.AddDays(-1)
+                };
+                Response.Cookies.Add(authCookie);
+            }
             Response.Redirect("~/Pages/Login.aspx");
         }
     }

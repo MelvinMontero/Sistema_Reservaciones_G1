@@ -228,6 +228,28 @@ namespace DataModels
 
 		#endregion
 
+		#region SpConsultarBitacora
+
+		public static IEnumerable<SpConsultarBitacoraResult> SpConsultarBitacora(this PvProyectoFinalDB dataConnection, int? @idReservacion)
+		{
+			var parameters = new []
+			{
+				new DataParameter("@idReservacion", @idReservacion, LinqToDB.DataType.Int32)
+			};
+
+			return dataConnection.QueryProc<SpConsultarBitacoraResult>("[dbo].[sp_ConsultarBitacora]", parameters);
+		}
+
+		public partial class SpConsultarBitacoraResult
+		{
+			[Column("idBitacora")     ] public int      IdBitacora      { get; set; }
+			[Column("fechaDeLaAccion")] public DateTime FechaDeLaAccion { get; set; }
+			[Column("accionRealizada")] public string   AccionRealizada { get; set; }
+			[Column("nombreCompleto") ] public string   NombreCompleto  { get; set; }
+		}
+
+		#endregion
+
 		#region SpConsultarHabitaciones
 
 		public static IEnumerable<SpConsultarHabitacionesResult> SpConsultarHabitaciones(this PvProyectoFinalDB dataConnection, int? @IdHotel, int? @CapacidadRequerida)
@@ -268,6 +290,34 @@ namespace DataModels
 		public static IEnumerable<Persona> SpConsultarPersona(this PvProyectoFinalDB dataConnection)
 		{
 			return dataConnection.QueryProc<Persona>("[dbo].[spConsultarPersona]");
+		}
+
+		#endregion
+
+		#region SpConsultarReservacion
+
+		public static IEnumerable<SpConsultarReservacionResult> SpConsultarReservacion(this PvProyectoFinalDB dataConnection, int? @idReservacion)
+		{
+			var parameters = new []
+			{
+				new DataParameter("@idReservacion", @idReservacion, LinqToDB.DataType.Int32)
+			};
+
+			return dataConnection.QueryProc<SpConsultarReservacionResult>("[dbo].[sp_ConsultarReservacion]", parameters);
+		}
+
+		public partial class SpConsultarReservacionResult
+		{
+			[Column("idReservacion")       ] public int       IdReservacion        { get; set; }
+			[Column("nombre")              ] public string    Nombre               { get; set; }
+			[Column("numeroHabitacion")    ] public string    NumeroHabitacion     { get; set; }
+			[Column("nombreCompleto")      ] public string    NombreCompleto       { get; set; }
+			[Column("fechaEntrada")        ] public DateTime? FechaEntrada         { get; set; }
+			[Column("fechaSalida")         ] public DateTime? FechaSalida          { get; set; }
+			[Column("totalDiasReservacion")] public int       TotalDiasReservacion { get; set; }
+			[Column("numeroNinhos")        ] public int       NumeroNinhos         { get; set; }
+			[Column("numeroAdultos")       ] public int       NumeroAdultos        { get; set; }
+			[Column("costoTotal")          ] public decimal   CostoTotal           { get; set; }
 		}
 
 		#endregion

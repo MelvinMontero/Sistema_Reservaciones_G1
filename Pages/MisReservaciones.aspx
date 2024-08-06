@@ -22,7 +22,7 @@
             <asp:BoundField DataField="estado" HeaderText="Estado" SortExpression="estado"></asp:BoundField>
             <asp:TemplateField>
                 <ItemTemplate>
-                    <a href="Detalle.aspx?id=<%# Eval ("idReservacion") %>" class="btn btn-link">Consultar</a>
+                    <a href="Detalle.aspx?id=<%# Eval ("idReservacion") %>" class="btn btn-secondary">Consultar</a>
                 </ItemTemplate>
             </asp:TemplateField>
         </Columns>
