@@ -228,6 +228,21 @@ namespace DataModels
 
 		#endregion
 
+		#region SpCancelarReservacion
+
+		public static int SpCancelarReservacion(this PvProyectoFinalDB dataConnection, int? @idReservacion, int? @idPersona)
+		{
+			var parameters = new []
+			{
+				new DataParameter("@idReservacion", @idReservacion, LinqToDB.DataType.Int32),
+				new DataParameter("@idPersona",     @idPersona,     LinqToDB.DataType.Int32)
+			};
+
+			return dataConnection.ExecuteProc("[dbo].[sp_CancelarReservacion]", parameters);
+		}
+
+		#endregion
+
 		#region SpConsultarBitacora
 
 		public static IEnumerable<SpConsultarBitacoraResult> SpConsultarBitacora(this PvProyectoFinalDB dataConnection, int? @idReservacion)
@@ -309,6 +324,7 @@ namespace DataModels
 		public partial class SpConsultarReservacionResult
 		{
 			[Column("idReservacion")       ] public int       IdReservacion        { get; set; }
+			[Column("idPersona")           ] public int       IdPersona            { get; set; }
 			[Column("nombre")              ] public string    Nombre               { get; set; }
 			[Column("numeroHabitacion")    ] public string    NumeroHabitacion     { get; set; }
 			[Column("nombreCompleto")      ] public string    NombreCompleto       { get; set; }
@@ -318,6 +334,7 @@ namespace DataModels
 			[Column("numeroNinhos")        ] public int       NumeroNinhos         { get; set; }
 			[Column("numeroAdultos")       ] public int       NumeroAdultos        { get; set; }
 			[Column("costoTotal")          ] public decimal   CostoTotal           { get; set; }
+			[Column("estado")              ] public char      Estado               { get; set; }
 		}
 
 		#endregion

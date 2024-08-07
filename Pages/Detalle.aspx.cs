@@ -16,10 +16,10 @@ namespace Sistema_Reservaciones_G1.Pages
         string conn = ConfigurationManager.ConnectionStrings["MyDatabase"].ConnectionString;
         protected void Page_Load(object sender, EventArgs e)
         {
-            /*if (Session["idPersona"] == null)
+            if (Session["idPersona"] == null)
             {
                 Response.Redirect("~/Pages/Login.aspx");
-            }*/
+            }
             if (!IsPostBack)
             {
                 try
@@ -30,6 +30,7 @@ namespace Sistema_Reservaciones_G1.Pages
                         var detalle = db.SpConsultarReservacion(idReservacion).FirstOrDefault();
                         if (detalle != null) 
                         {
+                            //Consultar la reservacion por id en los textbox
                             TextResernum.Text = detalle.IdReservacion.ToString();
                             Texthotel.Text = detalle.Nombre.ToString();
                             Textnumhabit.Text = detalle.NumeroHabitacion.ToString();
@@ -39,9 +40,10 @@ namespace Sistema_Reservaciones_G1.Pages
                             Textdiareserva.Text = detalle.TotalDiasReservacion.ToString();
                             Textninos.Text = detalle.NumeroNinhos.ToString();
                             textAdultos.Text = detalle.NumeroAdultos.ToString();
-                            decimal costoTotal = detalle.CostoTotal;
-                            string costoTotaltxt = String.Format("{ 0:C}", costoTotal);
-                            Textcostototal.Text = costoTotaltxt;
+                            Textcostototal.Text = detalle.CostoTotal.ToString();
+                            char estado = detalle.Estado;
+
+                            //Consultar la bitacora por id en el gridview
                             var bitacora = db.SpConsultarBitacora(idReservacion).FirstOrDefault();
                             int idBitacora = bitacora.IdBitacora;
                             var lista = db.SpConsultarBitacora(idReservacion)
@@ -54,6 +56,28 @@ namespace Sistema_Reservaciones_G1.Pages
                                 .ToList();
                             grvBitacoras.DataSource = lista;
                             grvBitacoras.DataBind();
+                            if (Session["EsEmpleado"] != null && (bool)Session["EsEmpleado"])
+                            {
+                                if (estado == 'A' && detalle.FechaSalida > System.DateTime.Now)
+                                {
+                                    btnEditar.Visible = true;
+                                }
+                                else
+                                {
+                                    btnEditar.Visible = false;
+                                }
+                            }
+                            else
+                            {
+                                if (estado == 'A' && detalle.FechaEntrada > System.DateTime.Now)
+                                {
+                                    btnEditar.Visible = true;
+                                }
+                                else
+                                {
+                                    btnEditar.Visible = false;
+                                }
+                            }
                         }
                         else
                         {
@@ -62,9 +86,9 @@ namespace Sistema_Reservaciones_G1.Pages
                         
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    lblMensaje.Text = "Reservacion no encontrada o Bitacora.";
+                    lblMensaje.Text = "Reservacion o Bitacora no encontrada." + ex;
                 }
             }
             if (string.IsNullOrEmpty(lblMensaje.Text))
@@ -75,20 +99,103 @@ namespace Sistema_Reservaciones_G1.Pages
             {
                 lblMensaje.Visible = true;
             }
+            if (Session["EsEmpleado"] != null && (bool)Session["EsEmpleado"])
+            {
+                btnCancelar.Visible = true;
+            }
+            else
+            {
+                btnCancelar.Visible= false;
+                
+            }
         }
         protected void btnEditar_Click(object sender, EventArgs e)
         {
-
+            Response.Redirect("~/Pages/EditarReservacion.aspx");
         }
 
         protected void btnCancelar_Click(object sender, EventArgs e)
         {
+            int idReservacion = int.Parse(Request.QueryString["ID"]);
+            try
+            {
+                using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
+                {
+                    var detalle = db.SpConsultarReservacion(idReservacion).FirstOrDefault();
+                    if (detalle != null)
+                    {
+                        int idPersona = (int)Session["idPersona"];
+                        bool esEmpleado = (bool)Session["EsEmpleado"];
+                        if (!esEmpleado && detalle.IdPersona != idPersona)
+                        {
+                            Response.Redirect("~/Pages/MisReservaciones.aspx");
+                            return;
+                        }
+                        if (detalle.Estado == 'I')
+                        {
+                            if (esEmpleado)
+                            {
+                                Response.Redirect("~/Pages/GestionarReservaciones.aspx");
+                            }
+                            else
+                            {
+                                Response.Redirect("~/Pages/MisReservaciones.aspx");
+                            }
+                            return;
+                        }
 
+                        DateTime fechaActual = DateTime.Now.Date;
+
+                        if (detalle.FechaSalida <= fechaActual)
+                        {
+                            if (esEmpleado)
+                            {
+                                Response.Redirect("~/Pages/GestionarReservaciones.aspx");
+                            }
+                            else
+                            {
+                                Response.Redirect("~/Pages/MisReservaciones.aspx");
+                            }
+                            return;
+                        }
+
+                        if (detalle.FechaEntrada <= fechaActual && detalle.FechaSalida > fechaActual)
+                        {
+                            if (esEmpleado)
+                            {
+                                Response.Redirect("~/Pages/GestionarReservaciones.aspx");
+                            }
+                            else
+                            {
+                                Response.Redirect("~/Pages/MisReservaciones.aspx");
+                            }
+                            return;
+                        }
+                        db.SpCancelarReservacion(idReservacion,idPersona);
+                        Response.Redirect("~/Pages/Exito.aspx?mensaje=Reservación%cancelada%20con%20éxito.");
+                    }
+                    else
+                    {
+                        lblMensaje.Text = "Reservación no encontrada.";
+                        lblMensaje.Visible = true;
+                    }
+                }
+            }catch (Exception ex)
+            {
+                lblMensaje.Text = "Ha ocurrido un error inesperado. " + ex.Message;
+            }
         }
 
         protected void btnRegresar_Click(object sender, EventArgs e)
         {
-
+            if (Session["EsEmpleado"] != null && (bool)Session["EsEmpleado"])
+            {
+                Response.Redirect("~/Pages/GestionarReservaciones.aspx");
+            }
+            else
+            {
+                Response.Redirect("~/Pages/MisReservaciones.aspx");
+            }
         }
     }
 }
