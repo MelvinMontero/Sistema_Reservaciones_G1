@@ -47,9 +47,9 @@
                 </tr>
             </table>
         </div>
-        <asp:Button ID="btnEditar" runat="server" Text="Editar reservación" OnClick="btnEditar_Click"/>
-        <asp:Button ID="btnCancelar" runat="server" Text="Cancelar reservación" OnClick="btnCancelar_Click"/>
-        <asp:Button ID="btnRegresar" runat="server" Text="Regresar" OnClick="btnRegresar_Click"/>
+        <asp:Button ID="btnEditar" runat="server" Text="Editar reservación"  CssClass="btn btn-primary" OnClick="btnEditar_Click"/>
+        <asp:Button ID="btnCancelar" runat="server" Text="Cancelar reservación" CssClass="btn btn-danger" OnClick="btnCancelar_Click"/>
+        <asp:Button ID="btnRegresar" runat="server" Text="Regresar" CausesValidation="false" CssClass="btn btn-secondary" OnClick="btnRegresar_Click"/>
     </div>
     <div>
         <h2>Lista de acciones realizadas</h2>

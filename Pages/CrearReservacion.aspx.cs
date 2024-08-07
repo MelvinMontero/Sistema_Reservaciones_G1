@@ -180,11 +180,11 @@ namespace Sistema_Reservaciones_G1.Pages
         {
             if (Session["EsEmpleado"]!=null && (bool)Session["EsEmpleado"])
             {
-                Response.Redirect("~/Pages/GestionarRervaiones.aspx");
+                Response.Redirect("~/Pages/GestionarReservaciones.aspx");
             }
             else
             {
-                Response.Redirect("~/Pages/MisRervaiones.aspx");
+                Response.Redirect("~/Pages/Reservaciones.aspx");
             }
         }
     }
