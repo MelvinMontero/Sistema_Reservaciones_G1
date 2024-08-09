@@ -156,16 +156,12 @@ namespace Sistema_Reservaciones_G1.Pages
         protected void cvFechaEntrada_ServerValidate(object source, ServerValidateEventArgs args)
         {
             DateTime fechaEntrada;
-            if (DateTime.TryParseExact(args.Value, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out fechaEntrada))
+            DateTime fechaSalida;
+
+            if (DateTime.TryParseExact(args.Value, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out fechaEntrada) &&
+                DateTime.TryParseExact(txtFechaSalida.Text, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out fechaSalida))
             {
-                if (fechaEntrada > DateTime.Now)
-                {
-                    args.IsValid = true;
-                }
-                else
-                {
-                    args.IsValid = false;
-                }
+                args.IsValid = fechaEntrada.Date >= DateTime.Now.Date && fechaEntrada.Date <= fechaSalida.Date;
             }
             else
             {
@@ -175,17 +171,12 @@ namespace Sistema_Reservaciones_G1.Pages
 
         protected void cvFechaSalida_ServerValidate(object source, ServerValidateEventArgs args)
         {
+            DateTime fechaEntrada;
             DateTime fechaSalida;
-            if (DateTime.TryParseExact(args.Value, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out fechaSalida))
+            if (DateTime.TryParseExact(txtFechaEntrada.Text, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out fechaEntrada) &&
+                DateTime.TryParseExact(args.Value, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out fechaSalida))
             {
-                if (fechaSalida > DateTime.Now)
-                {
-                    args.IsValid = true;
-                }
-                else
-                {
-                    args.IsValid = false;
-                }
+                args.IsValid = fechaSalida.Date >= fechaEntrada.Date && fechaSalida.Date >= DateTime.Now.Date;
             }
             else
             {

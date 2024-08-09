@@ -34,13 +34,13 @@
             </div>
             <div class="row mt-1 mb-1">
                 <div class="col-md-3">
-                    <asp:TextBox ID="txtFechaEntrada" runat="server" CssClass="form-control"></asp:TextBox>
+                    <asp:TextBox ID="txtFechaEntrada" runat="server" CssClass="form-control" TextMode="Date"></asp:TextBox>
                     <asp:RegularExpressionValidator 
                         ID="revFechaEntrada" 
                         runat="server" 
                         ControlToValidate="txtFechaEntrada"
                         ErrorMessage="Fecha en formato dd/MM/yyyy" 
-                        ValidationExpression="^\d{2}/\d{2}/\d{4}$" 
+                        ValidationExpression="^\d{4}-\d{2}-\d{2}$" 
                         CssClass="text-danger">
                     </asp:RegularExpressionValidator>
 
@@ -48,19 +48,20 @@
                         ID="cvFechaEntrada" 
                         runat="server" 
                         ControlToValidate="txtFechaEntrada" 
-                        ErrorMessage="Fecha no puede ser menor o igual a la fecha actual." 
+                        ErrorMessage="La fecha de entrada no puede ser menor que la fecha actual ni mayor que la fecha de salida." 
                         OnServerValidate="cvFechaEntrada_ServerValidate" 
                         CssClass="text-danger">
                     </asp:CustomValidator>
                 </div>
+
                 <div class="col-md-3">
-                    <asp:TextBox ID="txtFechaSalida" runat="server" CssClass="form-control"></asp:TextBox>
+                    <asp:TextBox ID="txtFechaSalida" runat="server" CssClass="form-control" TextMode="Date"></asp:TextBox>
                     <asp:RegularExpressionValidator 
                         ID="revFechaSalida" 
                         runat="server" 
                         ControlToValidate="txtFechaSalida"
-                        ErrorMessage="La fecha en formato dd/MM/yyyy" 
-                        ValidationExpression="^\d{2}/\d{2}/\d{4}$" 
+                        ErrorMessage="Fecha en formato dd/MM/yyyy" 
+                        ValidationExpression="^\d{4}-\d{2}-\d{2}$" 
                         CssClass="text-danger">
                     </asp:RegularExpressionValidator>
 
@@ -68,7 +69,7 @@
                         ID="cvFechaSalida" 
                         runat="server" 
                         ControlToValidate="txtFechaSalida" 
-                        ErrorMessage="Fecha no puede ser menor o igual a la fecha actual." 
+                        ErrorMessage="La fecha de salida no puede ser menor que la fecha de entrada ni menor que la fecha actual." 
                         OnServerValidate="cvFechaSalida_ServerValidate" 
                         CssClass="text-danger">
                     </asp:CustomValidator>

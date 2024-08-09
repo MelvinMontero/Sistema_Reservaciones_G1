@@ -85,33 +85,7 @@ namespace Sistema_Reservaciones_G1.Pages
                 Trace.Warn("Error al cargar clientes", ex.Message);
             }
         }
-        protected void ValidateFechaEntrada(object source, ServerValidateEventArgs args)
-        {
-            DateTime fechaEntrada;
-            if (DateTime.TryParseExact(args.Value, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out fechaEntrada))
-            {
-                args.IsValid = fechaEntrada.Date >= DateTime.Now.Date;
-            }
-            else
-            {
-                args.IsValid = false;
-            }
-        }
-
-        protected void ValidateFechaSalida(object source, ServerValidateEventArgs args)
-        {
-            DateTime fechaEntrada;
-            DateTime fechaSalida;
-            if (DateTime.TryParseExact(txtFechaEntrada.Text, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out fechaEntrada) &&
-                DateTime.TryParseExact(args.Value, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out fechaSalida))
-            {
-                args.IsValid = fechaSalida.Date > fechaEntrada.Date;
-            }
-            else
-            {
-                args.IsValid = false;
-            }
-        }
+        
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
             if (Page.IsValid)
@@ -136,9 +110,7 @@ namespace Sistema_Reservaciones_G1.Pages
                         var habitacion = db.SpConsultarHabitaciones(idHotel,totalPersonas).FirstOrDefault();
                         if (habitacion == null) 
                         {
-                            ScriptManager.RegisterStartupScript(this, GetType(), "alertMessage",
-                                "alert('No hay habitaciones disponibles con la capacidad requerida." +
-                                " Por favor, cambie el número de personas o seleccione otro hotel.');", true);   
+                            lblMensaje.Text = "No hay habitaciones disponibles con la capacidad requerida. Por favor, cambie el número de personas o seleccione otro hotel.Por favor, cambie el número de personas o seleccione otro hotel.";
                         }
                         else
                         {
@@ -185,6 +157,36 @@ namespace Sistema_Reservaciones_G1.Pages
             else
             {
                 Response.Redirect("~/Pages/Reservaciones.aspx");
+            }
+        }
+        protected void ValidateFechaEntrada(object source, ServerValidateEventArgs args)
+        {
+            DateTime fechaEntrada;
+            DateTime fechaSalida;
+
+            if (DateTime.TryParseExact(args.Value, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out fechaEntrada) &&
+                DateTime.TryParseExact(txtFechaSalida.Text, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out fechaSalida))
+            {
+                args.IsValid = fechaEntrada.Date >= DateTime.Now.Date && fechaEntrada.Date <= fechaSalida.Date;
+            }
+            else
+            {
+                args.IsValid = false;
+            }
+        }
+
+        protected void ValidateFechaSalida(object source, ServerValidateEventArgs args)
+        {
+            DateTime fechaEntrada;
+            DateTime fechaSalida;
+            if (DateTime.TryParseExact(txtFechaEntrada.Text, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out fechaEntrada) &&
+                DateTime.TryParseExact(args.Value, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out fechaSalida))
+            {
+                args.IsValid = fechaSalida.Date >= fechaEntrada.Date && fechaSalida.Date >= DateTime.Now.Date;
+            }
+            else
+            {
+                args.IsValid = false;
             }
         }
     }

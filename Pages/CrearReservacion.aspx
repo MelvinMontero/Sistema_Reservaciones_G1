@@ -15,15 +15,16 @@
                     <asp:TextBox ID="txtFechaEntrada" runat="server" CssClass="form-control" TextMode="Date"></asp:TextBox>
                     <asp:RequiredFieldValidator ID="rfvFechaEntrada" runat="server" ControlToValidate="txtFechaEntrada" ErrorMessage="La fecha de entrada es obligatoria" CssClass="text-danger" Display="Dynamic" />
                     <asp:CompareValidator ID="cvFechaEntrada" runat="server" ControlToValidate="txtFechaEntrada" Operator="DataTypeCheck" Type="Date" ErrorMessage="Ingrese una fecha válida en formato dd/MM/yyyy" CssClass="text-danger" Display="Dynamic" />
-                    <asp:CustomValidator ID="customFechaEntrada" runat="server" ControlToValidate="txtFechaEntrada" ErrorMessage="La fecha de entrada no puede ser menor o igual a la fecha actual" CssClass="text-danger" Display="Dynamic" OnServerValidate="ValidateFechaEntrada" />
+                    <asp:CustomValidator ID="customFechaEntrada" runat="server" ControlToValidate="txtFechaEntrada" ErrorMessage="La fecha de entrada no puede ser menor a la fecha actual ni mayor a la fecha de salida" CssClass="text-danger" Display="Dynamic" OnServerValidate="ValidateFechaEntrada" />
                 </div>
                 <div>
                     <span>Fecha de Salida</span><br />
                     <asp:TextBox ID="txtFechaSalida" runat="server" CssClass="form-control" TextMode="Date"></asp:TextBox>
                     <asp:RequiredFieldValidator ID="rfvFechaSalida" runat="server" ControlToValidate="txtFechaSalida" ErrorMessage="La fecha de salida es obligatoria" CssClass="text-danger" Display="Dynamic" />
                     <asp:CompareValidator ID="cvFechaSalida" runat="server" ControlToValidate="txtFechaSalida" Operator="DataTypeCheck" Type="Date" ErrorMessage="Ingrese una fecha válida en formato dd/MM/yyyy" CssClass="text-danger" Display="Dynamic" />
-                    <asp:CustomValidator ID="customFechaSalida" runat="server" ControlToValidate="txtFechaSalida" ErrorMessage="La fecha de salida no puede ser menor que la fecha de entrada" CssClass="text-danger" Display="Dynamic" OnServerValidate="ValidateFechaSalida" />
+                    <asp:CustomValidator ID="customFechaSalida" runat="server" ControlToValidate="txtFechaSalida" ErrorMessage="La fecha de salida no puede ser menor a la fecha de entrada ni menor a la fecha actual" CssClass="text-danger" Display="Dynamic" OnServerValidate="ValidateFechaSalida" />
                 </div>
+
             </div>
             <span>Número de Adultos</span><br />
             <asp:TextBox ID="txtNumAdultos" runat="server" CssClass="form-control"></asp:TextBox>
@@ -35,6 +36,7 @@
             <asp:RangeValidator ID="rvNumNinhos" runat="server" ControlToValidate="txtNumNinhos" MinimumValue="0" MaximumValue="100" Type="Integer" ErrorMessage="El número de niños debe ser mayor o igual a 0" CssClass="text-danger" Display="Dynamic" /><br />
         </div>
     </div>
+    <asp:Label ID="lblMensaje" runat="server" Text=""></asp:Label>
     <div>
         <div>
             <asp:Button ID="btnGuardar" runat="server" Text="Guardar" CssClass="btn btn-primary" OnClick="btnGuardar_Click"/>
