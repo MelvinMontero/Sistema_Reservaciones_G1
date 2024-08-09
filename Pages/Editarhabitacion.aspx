@@ -4,7 +4,8 @@
     <%-- solo para empleados --%>
 
      
-    <h1>Crear habitacion</h1>
+    <h1>Editar habitacion</h1>
+    
     <div>
         <h2>Hotel</h2>
         <asp:TextBox ID="Hotelselec" runat="server"></asp:TextBox>
@@ -15,7 +16,8 @@ el nombre del hotel asociado a la
 habitación en la base de datos. Esto
 significa que el dato mostrado en este
 campo no puede ser modificado por
-ningún usuario.--%>
+ningún usuario.--%>
+
 
     </div>
       <div>
@@ -25,6 +27,7 @@ ningún usuario.--%>
            <asp:RegularExpressionValidator ID="revNumHabitacion" runat="server" ControlToValidate="txtnumhabitacion"
         ErrorMessage="El número de habitación solo puede contener caracteres alfanuméricos." 
         ValidationExpression="^[a-zA-Z0-9]+$" CssClass="text-danger"></asp:RegularExpressionValidator>
+
           <%-- Da un mensaje de error al tener un numero de habitacion duplicada --%>
           <asp:CustomValidator ID="cvNumHabitacionUnico" runat="server" ControlToValidate="txtnumhabitacion" 
         ErrorMessage="El número de habitación no puede estar duplicado para el mismo hotel." 

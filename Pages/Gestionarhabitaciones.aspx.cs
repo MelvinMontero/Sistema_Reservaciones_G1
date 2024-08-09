@@ -11,7 +11,26 @@ namespace Sistema_Reservaciones_G1.Pages
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            //Verificacion de si el usuario esta registrado como persona o empleado
+            if (Session["idPersona"] == null)
+            {
+                Response.Redirect("~/Pages/Login.aspx");
+            }
+            int idPersona = (int)Session["idPersona"];
+            bool esEmpleado = Session["EsEmpleado"] != null && (bool)Session["EsEmpleado"];
 
+            if (!IsPostBack)
+            {
+                try
+                {
+
+
+                }
+                catch
+                {
+
+                }
+            }
         }
     }
 }

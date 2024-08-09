@@ -19,8 +19,27 @@ namespace Sistema_Reservaciones_G1.Pages
         string conn = ConfigurationManager.ConnectionStrings["MyDatabase"].ConnectionString;
         protected void Page_Load(object sender, EventArgs e)
         {
+            //Verificacion de si el usuario esta registrado como persona o empleado
+            if (Session["idPersona"] == null)
+            {
+                Response.Redirect("~/Pages/Login.aspx");
+            }
+            int idPersona = (int)Session["idPersona"];
+            bool esEmpleado = Session["EsEmpleado"] != null && (bool)Session["EsEmpleado"];
 
-        }
+            if (!IsPostBack)
+            {
+                try
+                {
+
+
+                }
+                catch
+                {
+
+                }
+            }
+            }
 
         protected void ButtonRegresar_Click(object sender, EventArgs e)
         {
@@ -37,7 +56,7 @@ namespace Sistema_Reservaciones_G1.Pages
                     string descripcion = Textdescrip.Text;
                     using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
                     {
-                        db.SpConsultarHabitaciones(hotelId,numeroHabitacion,capacidadMaxima,descripcion).FirstOrDefault();
+                        db.SpCrearHabitacion(hotelId,numeroHabitacion,capacidadMaxima,descripcion).FirstOrDefault();
 
                     }
                 }
