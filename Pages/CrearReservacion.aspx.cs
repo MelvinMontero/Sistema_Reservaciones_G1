@@ -88,87 +88,103 @@ namespace Sistema_Reservaciones_G1.Pages
         protected void ValidateFechaEntrada(object source, ServerValidateEventArgs args)
         {
             DateTime fechaEntrada;
-            if (DateTime.TryParseExact(args.Value, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out fechaEntrada))
+            if (DateTime.TryParseExact(args.Value, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out fechaEntrada))
             {
-                args.IsValid = fechaEntrada > DateTime.Now;
+                args.IsValid = fechaEntrada.Date >= DateTime.Now.Date;
             }
             else
             {
                 args.IsValid = false;
             }
         }
+
         protected void ValidateFechaSalida(object source, ServerValidateEventArgs args)
         {
             DateTime fechaEntrada;
             DateTime fechaSalida;
-            if (DateTime.TryParseExact(txtFechaEntrada.Text, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out fechaEntrada) &&
-                DateTime.TryParseExact(args.Value, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out fechaSalida))
+            if (DateTime.TryParseExact(txtFechaEntrada.Text, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out fechaEntrada) &&
+                DateTime.TryParseExact(args.Value, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out fechaSalida))
             {
-                args.IsValid = fechaSalida > fechaEntrada;
+                args.IsValid = fechaSalida.Date > fechaEntrada.Date;
             }
             else
             {
                 args.IsValid = false;
             }
         }
-
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
             if (Page.IsValid)
-            {
-                if (Page.IsValid)
+            {             
+                try
                 {
-                    try
+                    int idHotel = int.Parse(drdHotel.SelectedValue);
+                    int idCliente = int.Parse(drdCliente.SelectedValue);
+                    DateTime fechaEntrada = DateTime.Parse(txtFechaEntrada.Text);
+                    DateTime fechaSalida = DateTime.Parse(txtFechaSalida.Text);
+                    int numAdultos = int.Parse(txtNumAdultos.Text);
+                    int numNinos = int.Parse(txtNumNinhos.Text);
+                    int totalPersonas = numAdultos + numNinos;
+                    int totalDiasReservacion = (fechaSalida - fechaEntrada).Days;
+                    decimal costoTotal = 0;
+                    if (totalDiasReservacion == 0)
                     {
-                        int idHotel = int.Parse(drdHotel.SelectedValue);
-                        int idCliente = int.Parse(drdCliente.SelectedValue);
-                        DateTime fechaEntrada = DateTime.Parse(txtFechaEntrada.Text);
-                        DateTime fechaSalida = DateTime.Parse(txtFechaSalida.Text);
-                        int numAdultos = int.Parse(txtNumAdultos.Text);
-                        int numNinos = int.Parse(txtNumNinhos.Text);
-                        int totalPersonas = numAdultos + numNinos;
-
-                        
-                        using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
+                        totalDiasReservacion = 1;
+                    }
+                    using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
+                    {
+                        var habitacion = db.SpConsultarHabitaciones(idHotel,totalPersonas).FirstOrDefault();
+                        if (habitacion == null) 
                         {
-                            var habitacion = db.SpConsultarHabitaciones(idHotel,totalPersonas).FirstOrDefault();
-                            if (habitacion != null) 
-                            {
-
-                            }
-                            else
-                            {
-
-                            }
+                            ScriptManager.RegisterStartupScript(this, GetType(), "alertMessage",
+                                "alert('No hay habitaciones disponibles con la capacidad requerida." +
+                                " Por favor, cambie el número de personas o seleccione otro hotel.');", true);   
+                        }
+                        else
+                        {
+                            int idHabitacion = habitacion.IdHabitacion;
+                            string nHabitacion = habitacion.NumeroHabitacion;
+                            int capacidadMaxima = habitacion.CapacidadMaxima;
+                            decimal costoPorCadaAdulto = habitacion.CostoPorCadaAdulto;
+                            decimal costoPorCadaNinho = habitacion.CostoPorCadaNinho;
+                            costoTotal = totalDiasReservacion * ((numAdultos * costoPorCadaAdulto) + (numNinos * costoPorCadaNinho));
+                            DateTime fechaCreacion = DateTime.Now;
+                            char estado = 'A';
+                            db.SpCrearReservacion(idCliente,
+                                idHabitacion,
+                                fechaEntrada,
+                                fechaSalida,
+                                numAdultos,
+                                numNinos,
+                                totalDiasReservacion,
+                                costoPorCadaAdulto,
+                                costoPorCadaNinho,
+                                costoTotal,
+                                fechaCreacion,
+                                estado);
                             int idPersona = (int)Session["idPersona"];
-                            db.InsertBitacora(idPersona, "CREADA");
+                            db.SpCrearBitacora(idPersona, "CREADA");
+                            Response.Redirect("~/Pages/Exito.aspx?mensaje=Reservación%20creada%20con%20éxito.");
 
-                            // Redirigir a la página de éxito
-                            string urlRedirect = (Session["EsEmpleado"] != null && (bool)Session["EsEmpleado"])
-                                ? "~/Pages/GestionarReservaciones.aspx"
-                                : "~/Pages/MisReservaciones.aspx";
-
-                            Response.Redirect(urlRedirect);
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        // Manejo de excepciones y mensajes de error
-                        Trace.Warn("Error al guardar la reserva", ex.Message);
-                        ScriptManager.RegisterStartupScript(this, GetType(), "alertMessage", "alert('Se produjo un error al guardar la reservación.');", true);
-                    }
                 }
+                catch (Exception ex)
+                {
+                    Trace.Warn("Error al guardar la reserva", ex.Message);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alertMessage", "alert('Se produjo un error al guardar la reservación.');", true);
+                }               
             }
         }
         protected void btnCancelar_Click(object sender, EventArgs e)
         {
             if (Session["EsEmpleado"]!=null && (bool)Session["EsEmpleado"])
             {
-                Response.Redirect("~/Pages/GestionarRervaiones.aspx");
+                Response.Redirect("~/Pages/GestionarReservaciones.aspx");
             }
             else
             {
-                Response.Redirect("~/Pages/MisRervaiones.aspx");
+                Response.Redirect("~/Pages/Reservaciones.aspx");
             }
         }
     }

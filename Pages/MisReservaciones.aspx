@@ -1,11 +1,8 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="MisReservaciones.aspx.cs" Inherits="Sistema_Reservaciones_G1.Pages.MisReservaciones" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <h1>Mis Reservaciones</h1>
-    <a href="CrearReservacion.aspx">Nueva Reservación</a>
-    <asp:GridView ID="gvMisReservaciones" 
-            runat="server" 
-            AutoGenerateColumns="false" 
-            CssClass="align-content-lg-center  header-center=bold item-center"         
+    <a href="CrearReservacion.aspx" class="btn btn-primary">Nueva Reservación</a>
+    <asp:GridView ID="gvMisReservaciones" runat="server" AutoGenerateColumns="false" CssClass="grid-view"
             AllowCustomPaging="True" 
             CellPadding="5" 
             GridLines="Both" 
@@ -25,7 +22,7 @@
             <asp:BoundField DataField="estado" HeaderText="Estado" SortExpression="estado"></asp:BoundField>
             <asp:TemplateField>
                 <ItemTemplate>
-                    <a href="Detalle.aspx?id=<%# Eval ("idReservacion") %>" class="btn btn-link">Consultar</a>
+                    <a href="Detalle.aspx?id=<%# Eval ("idReservacion") %>" class="btn btn-secondary">Consultar</a>
                 </ItemTemplate>
             </asp:TemplateField>
         </Columns>

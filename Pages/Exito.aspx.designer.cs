@@ -11,16 +11,25 @@ namespace Sistema_Reservaciones_G1.Pages
 {
 
 
-    public partial class Gestionarhabitaciones
+    public partial class Exito
     {
 
         /// <summary>
-        /// Control gvListaHabitaciones.
+        /// Control lnkIrMisReservaciones.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvListaHabitaciones;
+        protected global::System.Web.UI.WebControls.LinkButton lnkIrMisReservaciones;
+
+        /// <summary>
+        /// Control lnkIrGestionarReservaciones.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lnkIrGestionarReservaciones;
     }
 }

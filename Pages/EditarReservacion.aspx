@@ -1,76 +1,130 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="EditarReservacion.aspx.cs" Inherits="Sistema_Reservaciones_G1.Pages.EditarReservacion" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+    <h1>Modificar reservacion</h1>
+    <div class="form-row">
+        <div class="details col-md-12">
+            <div class="row mt-1 mb-1">
+                <div class="col-md-3">
+                    <asp:Label ID="Label7" runat="server" Text="Hotel"></asp:Label>
+                </div>
+                <div class="col-md-3">
+                    <asp:TextBox ID="txtHotel" runat="server" required="required" ReadOnly="true" CssClass="form-control"></asp:TextBox>
+                </div>
+            </div>
 
-<h1>Modificar reservacion</h1>
-  
-<div>
-     <h2>Hotel</h2>  <asp:TextBox ID="Texthotel1" runat="server" required="required"></asp:TextBox>
+            <div class="row mt-1 mb-1">
+                <div class="col-md-3">
+                    <asp:Label ID="Label6" runat="server" Text="Numero de Habitación"></asp:Label>
+                </div>
+                <div class="col-md-3">
+                    <asp:TextBox ID="txtHabitacion" runat="server" required="required" ReadOnly="true" CssClass="form-control"></asp:TextBox>
+                </div>
+            </div>
+            <div class="row mt-1 mb-1">
+                <div class="col-md-3">
+                    <asp:Label ID="Label5" runat="server" Text="Cliente"></asp:Label>
+                </div>
+                <div class="col-md-3">
+                    <asp:TextBox ID="txtCliente" runat="server" required="required" ReadOnly="true" CssClass="form-control"></asp:TextBox>
+                </div>
+            </div>
+            <div class="row mt-1 mb-1">
+                <div class="col-md-3"><asp:Label ID="Label3" runat="server" Text="Fecha Entrada"></asp:Label></div>
+                <div class="col-md-3"><asp:Label ID="Label4" runat="server" Text="Fecha Salida"></asp:Label></div>
+            </div>
+            <div class="row mt-1 mb-1">
+                <div class="col-md-3">
+                    <asp:TextBox ID="txtFechaEntrada" runat="server" CssClass="form-control"></asp:TextBox>
+                    <asp:RegularExpressionValidator 
+                        ID="revFechaEntrada" 
+                        runat="server" 
+                        ControlToValidate="txtFechaEntrada"
+                        ErrorMessage="Fecha en formato dd/MM/yyyy" 
+                        ValidationExpression="^\d{2}/\d{2}/\d{4}$" 
+                        CssClass="text-danger">
+                    </asp:RegularExpressionValidator>
 
-</div>
+                    <asp:CustomValidator 
+                        ID="cvFechaEntrada" 
+                        runat="server" 
+                        ControlToValidate="txtFechaEntrada" 
+                        ErrorMessage="Fecha no puede ser menor o igual a la fecha actual." 
+                        OnServerValidate="cvFechaEntrada_ServerValidate" 
+                        CssClass="text-danger">
+                    </asp:CustomValidator>
+                </div>
+                <div class="col-md-3">
+                    <asp:TextBox ID="txtFechaSalida" runat="server" CssClass="form-control"></asp:TextBox>
+                    <asp:RegularExpressionValidator 
+                        ID="revFechaSalida" 
+                        runat="server" 
+                        ControlToValidate="txtFechaSalida"
+                        ErrorMessage="La fecha en formato dd/MM/yyyy" 
+                        ValidationExpression="^\d{2}/\d{2}/\d{4}$" 
+                        CssClass="text-danger">
+                    </asp:RegularExpressionValidator>
 
- <div>
-      <h2>Numero de habitacion</h2>  <asp:TextBox ID="Textnumhabit" runat="server" required="required"></asp:TextBox>
- </div>
- <div>
-      <h2>Cliente</h2>  <asp:TextBox ID="Textcliente" runat="server" required="required"></asp:TextBox>
- </div>
- <div>
-     <h2>Fecha Entrada</h2>  <asp:TextBox ID="TextFechaentrada" runat="server"></asp:TextBox>
-     <%-- Realiza validacion que la fecha de entrada este en formato correcto y no sea menor o igual a la fecha actual --%>
-    <asp:RegularExpressionValidator ID="revFechaEntrada" runat="server" ControlToValidate="TextFechaentrada"
-        ErrorMessage="La fecha de entrada debe estar en el formato dd/MM/yyyy" 
-        ValidationExpression="^\d{2}/\d{2}/\d{4}$" CssClass="text-danger"></asp:RegularExpressionValidator>
-    <asp:CustomValidator ID="cvFechaEntrada" runat="server" ControlToValidate="TextFechaentrada" 
-        ErrorMessage="La fecha de entrada no puede ser menor o igual a la fecha actual." 
-        OnServerValidate="cvFechaEntrada_ServerValidate" CssClass="text-danger"></asp:CustomValidator>
-     <%-- En el server validate falta probarlo --%>
-
-     <h2>Fecha salida</h2>  <asp:TextBox ID="TextBox2" runat="server"></asp:TextBox>
-       <%-- Realiza validacion que la fecha de entrada este en formato correcto y no sea menor o igual a la fecha actual --%>
-     <asp:RegularExpressionValidator ID="revFechaSalida" runat="server" ControlToValidate="TextBox2"
-        ErrorMessage="La fecha de salida debe estar en el formato dd/MM/yyyy" 
-        ValidationExpression="^\d{2}/\d{2}/\d{4}$" CssClass="text-danger"></asp:RegularExpressionValidator>
-    <asp:CustomValidator ID="cvFechaSalida" runat="server" ControlToValidate="TextBox2" 
-        ErrorMessage="La fecha de salida no puede ser menor o igual a la fecha actual." 
-        OnServerValidate="cvFechaSalida_ServerValidate" CssClass="text-danger"></asp:CustomValidator>
- </div>
- <div>
-     <h2>Numero de adultos</h2>
-       <%--cambie el drop down list espero que este bien asi--%>
-             <asp:DropDownList ID="ddlClientes" runat="server" CssClass="form-control" required="required">
-        <asp:ListItem Text="1" Value="1" />
-        <asp:ListItem Text="2" Value="2" />
-        <asp:ListItem Text="3" Value="3" />
-        <asp:ListItem Text="4" Value="4" />
-        <asp:ListItem Text="5" Value="5" />
-        <asp:ListItem Text="6" Value="6" />
-        <asp:ListItem Text="7" Value="7" />
-        <asp:ListItem Text="8" Value="8" />
-    </asp:DropDownList>
-</div>
-    
-    <div>
-    <h2>Numero de ninos</h2>
-    <asp:DropDownList ID="DropDownList1" runat="server" CssClass="form-control" required="required">
-        <asp:ListItem Text="0" Value="0" />
-        <asp:ListItem Text="1" Value="1" />
-        <asp:ListItem Text="2" Value="2" />
-        <asp:ListItem Text="3" Value="3" />
-        <asp:ListItem Text="4" Value="4" />
-        <asp:ListItem Text="5" Value="5" />
-        <asp:ListItem Text="6" Value="6" />
-        <asp:ListItem Text="7" Value="7" />
-        <asp:ListItem Text="8" Value="8" />
-    </asp:DropDownList>
-</div>
-
-    <div>
-        <asp:Button ID="ButtonGuarda" runat="server" Text="Guardar" OnClick="ButtonGuarda_Click" />
-        <%-- Pagina 29 boton guardar --%>
-
-        <asp:Button ID="ButtonRegresar" runat="server" Text="Regresar" OnClick="ButtonRegresar_Click" />
-        <%-- Pagina 30 boton cancelar --%>
-    </div>
-
-
+                    <asp:CustomValidator 
+                        ID="cvFechaSalida" 
+                        runat="server" 
+                        ControlToValidate="txtFechaSalida" 
+                        ErrorMessage="Fecha no puede ser menor o igual a la fecha actual." 
+                        OnServerValidate="cvFechaSalida_ServerValidate" 
+                        CssClass="text-danger">
+                    </asp:CustomValidator>
+                </div>
+            </div>
+            <div class="row mt-1 mb-1">
+                <div class="col-md-3"><asp:Label ID="Label1" runat="server" Text="Numero de adultos"></asp:Label></div>
+                <div class="col-md-3"><asp:Label ID="Label2" runat="server" Text="Numero de niños"></asp:Label></div>
+            </div>
+            <div class="row mt-1 mb-1">
+                <div class="col-md-3">
+                    <asp:TextBox ID="txtnumeroAdultos" runat="server" CssClass="form-control"></asp:TextBox>
+                    <asp:RegularExpressionValidator 
+                        ID="revNumeroAdultos" 
+                        runat="server" 
+                        ControlToValidate="txtnumeroAdultos" 
+                        ErrorMessage="Ingrese un número entero" 
+                        ValidationExpression="^\d+$" 
+                        ForeColor="Red">
+                    </asp:RegularExpressionValidator>
+                    <asp:RangeValidator 
+                        ID="rvNumeroAdultos" 
+                        runat="server" 
+                        ControlToValidate="txtnumeroAdultos" 
+                        ErrorMessage="El número debe ser al menos 1." 
+                        MinimumValue="1" 
+                        MaximumValue="4" 
+                        Type="Integer" 
+                        ForeColor="Red">
+                    </asp:RangeValidator>
+                </div>
+                <div class="col-md-3">
+                     <asp:TextBox ID="txtnumeroNinhos" runat="server" CssClass="form-control"></asp:TextBox>
+                     <asp:RegularExpressionValidator 
+                         ID="revNumeroNinhos" 
+                         runat="server" 
+                         ControlToValidate="txtnumeroNinhos" 
+                         ErrorMessage="Ingrese un número entero" 
+                         ValidationExpression="^\d+$" 
+                         ForeColor="Red">
+                     </asp:RegularExpressionValidator>
+                     <asp:RangeValidator 
+                         ID="rvNumeroNinhos" 
+                         runat="server" 
+                         ControlToValidate="txtnumeroNinhos" 
+                         ErrorMessage="No puede ser menor que 0" 
+                         MinimumValue="0" 
+                         MaximumValue="4" 
+                         Type="Integer" 
+                         ForeColor="Red">
+                     </asp:RangeValidator>
+                </div>  
+            </div>
+            <asp:Button ID="btnGuardar" runat="server" Text="Guardar" CssClass="btn btn-primary" OnClick="btnGuardar_Click"/>
+            <asp:Button ID="btnRegresar" runat="server" Text="Regresar" CssClass="btn btn-secondary" CausesValidation="false" OnClick="btnRegresar_Click"/>
+        </div>          
+    </div> 
+    <asp:Label ID="lblMensaje" runat="server" Text=""></asp:Label>
 </asp:Content>
