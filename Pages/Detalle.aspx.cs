@@ -74,19 +74,24 @@ namespace Sistema_Reservaciones_G1.Pages
                                 grvBitacoras.DataBind();
 
                                 // Controlar la visibilidad del botón Editar
-                                if (esEmpleado)
+                                if (!esEmpleado)
                                 {
-                                    btnEditar.Visible = estado == 'A' && detalle.FechaSalida > DateTime.Now;
+                                    btnEditar.Visible = detalle.Estado == 'A' && detalle.FechaEntrada > DateTime.Now;
+                                }
+                                else if (esEmpleado)
+                                {
+                                    btnEditar.Visible = detalle.Estado == 'A' && detalle.FechaSalida > DateTime.Now;
                                 }
                                 else
                                 {
-                                    btnEditar.Visible = estado == 'A' && detalle.FechaEntrada > DateTime.Now;
+                                    btnEditar.Visible = false;
                                 }
-                            }
-                            else
-                            {
-                                lblMensaje.Text = "Reservación no encontrada.";
-                            }
+                                DateTime fechaActual = DateTime.Now;
+                                if (detalle.Estado == 'I')
+                                {
+                                    btnCancelar.Visible = false;
+                                }
+                            }   
                         }
                     }
                     else
@@ -102,8 +107,6 @@ namespace Sistema_Reservaciones_G1.Pages
                 // Mostrar o esconder el mensaje de error
                 lblMensaje.Visible = !string.IsNullOrEmpty(lblMensaje.Text);
             }
-
-            // Controlar la visibilidad del botón Cancelar
 
         }
         protected void btnEditar_Click(object sender, EventArgs e)
