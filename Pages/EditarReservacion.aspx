@@ -34,7 +34,7 @@
             </div>
             <div class="row mt-1 mb-1">
                 <div class="col-md-3">
-                    <asp:TextBox ID="txtFechaEntrada" runat="server" CssClass="form-control"></asp:TextBox>
+                    <asp:TextBox ID="txtFechaEntrada" runat="server" CssClass="form-control" TextMode="Date"></asp:TextBox>
                     <asp:RegularExpressionValidator 
                         ID="revFechaEntrada" 
                         runat="server" 
@@ -54,7 +54,7 @@
                     </asp:CustomValidator>
                 </div>
                 <div class="col-md-3">
-                    <asp:TextBox ID="txtFechaSalida" runat="server" CssClass="form-control"></asp:TextBox>
+                    <asp:TextBox ID="txtFechaSalida" runat="server" CssClass="form-control" TextMode="Date"></asp:TextBox>
                     <asp:RegularExpressionValidator 
                         ID="revFechaSalida" 
                         runat="server" 
