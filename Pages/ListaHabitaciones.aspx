@@ -35,10 +35,15 @@
             <asp:GridView ID="gvHabitaciones" runat="server" AutoGenerateColumns="False" CssClass="table">
                 <Columns>
                     <asp:BoundField DataField="ID" HeaderText="ID" HeaderStyle-CssClass="center-align" ItemStyle-CssClass="center-align" />
+
                     <asp:BoundField DataField="Hotel" HeaderText="Hotel" HeaderStyle-CssClass="left-align" ItemStyle-CssClass="left-align" />
+
                     <asp:BoundField DataField="NumeroHabitacion" HeaderText="Número de habitación" HeaderStyle-CssClass="center-align" ItemStyle-CssClass="center-align" />
+
                     <asp:BoundField DataField="CapacidadMaxima" HeaderText="Capacidad máxima" HeaderStyle-CssClass="center-align" ItemStyle-CssClass="center-align" />
+
                     <asp:BoundField DataField="Estado" HeaderText="Estado" HeaderStyle-CssClass="center-align" ItemStyle-CssClass="center-align" />
+
                     <asp:TemplateField>
                         <ItemTemplate>
                             <asp:HyperLink ID="lnkModificar" runat="server" Text="Modificar" NavigateUrl='<%# Eval("ID", "~/Pages/EditarHabitacion.aspx?ID={0}") %>'>
