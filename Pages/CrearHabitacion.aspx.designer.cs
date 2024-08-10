@@ -33,22 +33,13 @@ namespace Sistema_Reservaciones_G1.Pages
         protected global::System.Web.UI.WebControls.TextBox txtnumhabitacion;
 
         /// <summary>
-        /// revNumHabitacion control.
+        /// rfvNumeroHabitacion control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RegularExpressionValidator revNumHabitacion;
-
-        /// <summary>
-        /// cvNumHabitacionUnico control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CustomValidator cvNumHabitacionUnico;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvNumeroHabitacion;
 
         /// <summary>
         /// DropDownListcapacidad control.
@@ -60,15 +51,6 @@ namespace Sistema_Reservaciones_G1.Pages
         protected global::System.Web.UI.WebControls.DropDownList DropDownListcapacidad;
 
         /// <summary>
-        /// rvCapacidad control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RangeValidator rvCapacidad;
-
-        /// <summary>
         /// Textdescrip control.
         /// </summary>
         /// <remarks>
@@ -78,30 +60,30 @@ namespace Sistema_Reservaciones_G1.Pages
         protected global::System.Web.UI.WebControls.TextBox Textdescrip;
 
         /// <summary>
-        /// revDescripcion control.
+        /// rfvDescripcion control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RegularExpressionValidator revDescripcion;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvDescripcion;
 
         /// <summary>
-        /// ButtonGuardarcrearhabitacion control.
+        /// btnGuardar control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button ButtonGuardarcrearhabitacion;
+        protected global::System.Web.UI.WebControls.Button btnGuardar;
 
         /// <summary>
-        /// ButtonRegresar control.
+        /// btnRegresar control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button ButtonRegresar;
+        protected global::System.Web.UI.WebControls.Button btnRegresar;
     }
 }

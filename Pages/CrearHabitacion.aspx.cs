@@ -68,5 +68,15 @@ namespace Sistema_Reservaciones_G1.Pages
            //se debe agregar un validador de pagina ?
             }
         }
+
+        protected void btnGuardar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnRegresar_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
