@@ -28,35 +28,89 @@ namespace Sistema_Reservaciones_G1.Pages
             {
                 try
                 {
-                
-                
+                    int habitacionId = int.Parse(Request.QueryString["ID"]);
+
+                    using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
+                    {
+                        var habitacion = db.SpConsultarHabitaciones(habitacionId).FirstOrDefault();
+
+
+                        if (habitacion.Estado == 'I')
+                        {
+                            Response.Redirect("~/Pages/Gestionarhabitaciones.aspx");
+                        }
+                        else
+                        {
+                            Response.Redirect("~/Pages/HabitacionConReservasActivas.aspx");
+                        }
+
+                        // Aqui carga los datos de habitacion seleccionada
+                        Hotelselec.Text = habitacion.IdHotel;
+                        txtnumhabitacion.Text = habitacion.NumeroHabitacion;
+                        DropDownListcapacidad.SelectedValue = habitacion.CapacidadMaxima.ToString();
+                        Textdescrip.Text = habitacion.Descripcion;
+                    }
                 }
-                catch
+                catch (Exception ex)
                 {
-
+                    lblMensaje.Text = "Ocurrió un error al cargar la habitación: " + ex.Message;
+                    lblMensaje.Visible = true;
                 }
-
 
 
 
             }
         }
+               
 
-        protected void Buttoninactivar_Click(object sender, EventArgs e)
+
+
+
+
+    protected void Buttoninactivar_Click(object sender, EventArgs e)
+    {
+
+        try
         {
+            int habitacionId = Convert.ToInt32(Hotelselec.Text);
 
+            using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
+            {
+                db.InactivarHabitacion(habitacionId);
+            }
+        }
+        catch
+        {
+            Response.Redirect("Error");
+        }
+
+
+
+
+
+    }
+
+    protected void ButtonGuardareditarhabitacion_Click(object sender, EventArgs e)
+    {
+        if (Page.IsValid)
+        {
             try
             {
                 int habitacionId = Convert.ToInt32(Hotelselec.Text);
-
+                string numeroHabitacion = txtnumhabitacion.Text;
+                int capacidadMaxima = Convert.ToInt32(DropDownListcapacidad.SelectedValue);
+                string descripcion = Textdescrip.Text;
                 using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
                 {
-                    db.InactivarHabitacion(habitacionId);
+                    db.EditarHabitacion(habitacionId, numeroHabitacion, capacidadMaxima, descripcion).FirstOrDefault();
+
                 }
             }
-            catch 
+            catch
             {
+
                 Response.Redirect("Error");
+
             }
 
 
@@ -64,47 +118,17 @@ namespace Sistema_Reservaciones_G1.Pages
 
 
         }
+    }
 
-        protected void ButtonGuardareditarhabitacion_Click(object sender, EventArgs e)
+    protected void ButtonRegresar_Click(object sender, EventArgs e)
+    {
+        if (Session["EsEmpleado"] != null && (bool)Session["EsEmpleado"])
         {
-            if (Page.IsValid)
-            {
-                try
-                {
-                    int habitacionId = Convert.ToInt32(Hotelselec.Text);
-                    string numeroHabitacion = txtnumhabitacion.Text;
-                    int capacidadMaxima = Convert.ToInt32(DropDownListcapacidad.SelectedValue);
-                    string descripcion = Textdescrip.Text;
-                    using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
-                    {
-                        db.EditarHabitacion(habitacionId, numeroHabitacion, capacidadMaxima, descripcion).FirstOrDefault();
-
-                    }
-                }
-                catch
-                {
-
-                    Response.Redirect("Error");
-
-                }
-
-
-
-
-
-            }
+            Response.Redirect("~/Pages/GestionarReservaciones.aspx");
         }
-
-        protected void ButtonRegresar_Click(object sender, EventArgs e)
+        else
         {
-            if (Session["EsEmpleado"] != null && (bool)Session["EsEmpleado"])
-            {
-                Response.Redirect("~/Pages/GestionarReservaciones.aspx");
-            }
-            else
-            {
-                Response.Redirect("~/Pages/MisReservaciones.aspx");
-            }
+            Response.Redirect("~/Pages/MisReservaciones.aspx");
         }
     }
 }

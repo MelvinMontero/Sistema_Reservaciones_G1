@@ -8,16 +8,9 @@
     
     <div>
         <h2>Hotel</h2>
-        <asp:TextBox ID="Hotelselec" runat="server"></asp:TextBox>
-   <%--     Campo de texto que debe de aparecer
-bloqueado para todos los usuarios, ya
-que su propósito es únicamente mostrar
-el nombre del hotel asociado a la
-habitación en la base de datos. Esto
-significa que el dato mostrado en este
-campo no puede ser modificado por
-ningún usuario.--%>
-
+      
+         <label for="Hotelselec">Hotel:</label>
+                <asp:TextBox ID="Hotelselec" runat="server" ReadOnly="True"></asp:TextBox>
 
     </div>
       <div>
@@ -32,6 +25,8 @@ ningún usuario.--%>
           <asp:CustomValidator ID="cvNumHabitacionUnico" runat="server" ControlToValidate="txtnumhabitacion" 
         ErrorMessage="El número de habitación no puede estar duplicado para el mismo hotel." 
         OnServerValidate="cvNumHabitacionUnico_ServerValidate" CssClass="text-danger"></asp:CustomValidator>
+
+
       </div>
       <div>
           <h2>Capacidad maxima</h2>
@@ -54,6 +49,6 @@ ningún usuario.--%>
           <asp:Button ID="Buttoninactivar" runat="server" Text="Inactivar" OnClick="Buttoninactivar_Click" />
            <asp:Button ID="ButtonRegresar" runat="server" Text="Regresar" OnClick="ButtonRegresar_Click"/>
       </div>
-   <%-- Faltan las validaciones a los botones --%>
+ <asp:Label ID="lblMensaje" runat="server" CssClass="text-danger" Visible="False"></asp:Label>
       
 </asp:Content>
