@@ -29,54 +29,73 @@ namespace Sistema_Reservaciones_G1.Pages
 
             if (!IsPostBack)
             {
-                try
-                {
+                
+                    CargarHoteles();
 
-
-                }
-                catch
-                {
-
-                }
+               
+               
             }
-            }
-
-        protected void ButtonRegresar_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("Gestionarhabitaciones.aspx");
         }
 
-        protected void ButtonGuardarcrearhabitacion_Click(object sender, EventArgs e)
+        private void CargarHoteles()
         {
-            if (Page.IsValid) { try
+            using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
+            {
+                try
                 {
-                    int hotelId = Convert.ToInt32(droplisthoteles.SelectedValue);
+                    using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
+                    {
+                        var hoteles = db.SpCargartodoslosHoteles()
+                        .OrderBy(h => h.Nombre)
+                        .Select(h => h.Nombre) 
+                        .ToList();
+                        droplisthoteles.DataSource = hoteles;
+                        droplisthoteles.DataBind();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Error al cargar hoteles: {ex.Message}");
+                }
+
+
+            } 
+}
+
+        protected void btnRegresar_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("ListaHabitaciones.aspx");
+        }
+
+        protected void btnGuardar_Click(object sender, EventArgs e)
+        {
+            if (Page.IsValid)
+            {
+                try
+                {
+                    string Nombre = droplisthoteles.SelectedValue;
                     string numeroHabitacion = txtnumhabitacion.Text;
                     int capacidadMaxima = Convert.ToInt32(DropDownListcapacidad.SelectedValue);
                     string descripcion = Textdescrip.Text;
                     using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
                     {
-                        db.SpCrearHabitacion(hotelId,numeroHabitacion,capacidadMaxima,descripcion).FirstOrDefault();
+                        db.SpCrearHabitacion(Nombre, numeroHabitacion, capacidadMaxima, descripcion).FirstOrDefault();
 
                     }
+                    Response.Redirect("ListaHabitaciones.aspx?mensaje=Habitación creada con éxito");
                 }
-                catch { 
-                
-                Response.Redirect("Error");
-                
+                catch
+                {
+
+                    Response.Redirect("Error");
+
                 }
-           //se debe agregar un validador de pagina ?
+
             }
         }
 
-        protected void btnGuardar_Click(object sender, EventArgs e)
-        {
 
-        }
 
-        protected void btnRegresar_Click(object sender, EventArgs e)
-        {
 
-        }
     }
 }
