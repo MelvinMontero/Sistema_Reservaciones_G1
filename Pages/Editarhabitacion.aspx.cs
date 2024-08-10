@@ -70,25 +70,26 @@ namespace Sistema_Reservaciones_G1.Pages
     protected void Buttoninactivar_Click(object sender, EventArgs e)
     {
 
-        try
-        {
-            int habitacionId = Convert.ToInt32(Hotelselec.Text);
 
-            using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
+            try
             {
-                db.InactivarHabitacion(habitacionId);
+                int habitacionId = int.Parse(Request.QueryString["ID"]);
+
+                using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
+                {
+                    db.InactivarHabitacion(habitacionId);
+                }
+
+                Response.Redirect("~/Pages/MensajeExito.aspx?mensaje=la habitación ha sido inactivada exitosamente");
             }
+            catch (Exception ex)
+            {
+                lblMensaje.Text = "Error al inactivar la habitación: " + ex.Message;
+                lblMensaje.Visible = true;
+            }
+
+
         }
-        catch
-        {
-            Response.Redirect("Error");
-        }
-
-
-
-
-
-    }
 
     protected void ButtonGuardareditarhabitacion_Click(object sender, EventArgs e)
     {
@@ -96,7 +97,8 @@ namespace Sistema_Reservaciones_G1.Pages
         {
             try
             {
-                int habitacionId = Convert.ToInt32(Hotelselec.Text);
+                    //int idHabitacion = int.Parse(Request.QueryString["ID"]);??
+                    int habitacionId = Convert.ToInt32(Hotelselec.Text);
                 string numeroHabitacion = txtnumhabitacion.Text;
                 int capacidadMaxima = Convert.ToInt32(DropDownListcapacidad.SelectedValue);
                 string descripcion = Textdescrip.Text;
@@ -122,13 +124,6 @@ namespace Sistema_Reservaciones_G1.Pages
 
     protected void ButtonRegresar_Click(object sender, EventArgs e)
     {
-        if (Session["EsEmpleado"] != null && (bool)Session["EsEmpleado"])
-        {
-            Response.Redirect("~/Pages/GestionarReservaciones.aspx");
+            Response.Redirect("~/Pages/ListaHabitaciones.aspx");
         }
-        else
-        {
-            Response.Redirect("~/Pages/MisReservaciones.aspx");
-        }
-    }
 }
