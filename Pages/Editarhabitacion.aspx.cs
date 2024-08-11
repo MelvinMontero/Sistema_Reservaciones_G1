@@ -66,14 +66,14 @@ namespace Sistema_Reservaciones_G1.Pages
 
             }
         }
-               
 
 
 
 
 
-    protected void Buttoninactivar_Click(object sender, EventArgs e)
-    {
+
+        protected void Buttoninactivar_Click(object sender, EventArgs e)
+        {
 
 
             try
@@ -96,39 +96,40 @@ namespace Sistema_Reservaciones_G1.Pages
 
         }
 
-    protected void ButtonGuardareditarhabitacion_Click(object sender, EventArgs e)
-    {
-        if (Page.IsValid)
+        protected void ButtonGuardareditarhabitacion_Click(object sender, EventArgs e)
         {
-            try
+            if (Page.IsValid)
             {
+                try
+                {
                     //int idHabitacion = int.Parse(Request.QueryString["ID"]);??
                     int habitacionId = Convert.ToInt32(Hotelselec.Text);
-                string numeroHabitacion = txtnumhabitacion.Text;
-                int capacidadMaxima = Convert.ToInt32(DropDownListcapacidad.SelectedValue);
-                string descripcion = Textdescrip.Text;
-                using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
+                    string numeroHabitacion = txtnumhabitacion.Text;
+                    int capacidadMaxima = Convert.ToInt32(DropDownListcapacidad.SelectedValue);
+                    string descripcion = Textdescrip.Text;
+                    using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
+                    {
+                        db.EditarHabitacion(habitacionId, numeroHabitacion, capacidadMaxima, descripcion).FirstOrDefault();
+
+                    }
+                }
+                catch
                 {
-                    db.EditarHabitacion(habitacionId, numeroHabitacion, capacidadMaxima, descripcion).FirstOrDefault();
+
+                    Response.Redirect("Error");
 
                 }
+
+
+
+
+
             }
-            catch
-            {
-
-                Response.Redirect("Error");
-
-            }
-
-
-
-
-
         }
-    }
 
-    protected void ButtonRegresar_Click(object sender, EventArgs e)
-    {
+        protected void ButtonRegresar_Click(object sender, EventArgs e)
+        {
             Response.Redirect("~/Pages/ListaHabitaciones.aspx");
         }
+    }
 }

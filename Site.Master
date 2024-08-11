@@ -50,7 +50,7 @@
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/">Inicio</a></li>
                         <li class="nav-item"><a class="nav-link" runat="server" href="~/Pages/MisReservaciones.aspx">Mis Reservaciones</a></li>
                         <asp:HyperLink ID="hlGestionarReservaciones" runat="server" CssClass="nav-link" NavigateUrl="~/Pages/GestionarReservaciones.aspx" Text="Gestionar Reservaciones" Visible="false" />
-                        <asp:HyperLink ID="hlGestionarHabitaciones" runat="server" CssClass="nav-link" NavigateUrl="~/Pages/GestionarHabitaciones.aspx" Text="Gestionar Habitaciones" Visible="false" />
+                        <asp:HyperLink ID="hlGestionarHabitaciones" runat="server" CssClass="nav-link" NavigateUrl="~/Pages/ListaHabitaciones.aspx" Text="Gestionar Habitaciones" Visible="false" />
                     </ul>
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
