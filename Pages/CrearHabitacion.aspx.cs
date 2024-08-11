@@ -39,7 +39,7 @@ namespace Sistema_Reservaciones_G1.Pages
 
         private void CargarHoteles()
         {
-            using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
+            if (Page.IsValid)
             {
                 try
                 {
@@ -47,7 +47,7 @@ namespace Sistema_Reservaciones_G1.Pages
                     {
                         var hoteles = db.SpCargartodoslosHoteles()
                         .OrderBy(h => h.Nombre)
-                        .Select(h => h.Nombre) 
+                        .Select(h => h.Nombre)
                         .ToList();
                         droplisthoteles.DataSource = hoteles;
                         droplisthoteles.DataBind();
@@ -57,10 +57,9 @@ namespace Sistema_Reservaciones_G1.Pages
                 {
                     System.Diagnostics.Debug.WriteLine($"Error al cargar hoteles: {ex.Message}");
                 }
-
-
-            } 
-}
+            }
+            
+        }
 
         protected void btnRegresar_Click(object sender, EventArgs e)
         {
@@ -73,13 +72,13 @@ namespace Sistema_Reservaciones_G1.Pages
             {
                 try
                 {
-                    string Nombre = droplisthoteles.SelectedValue;
+                    int Nombre = int.Parse(droplisthoteles.SelectedValue);
                     string numeroHabitacion = txtnumhabitacion.Text;
                     int capacidadMaxima = Convert.ToInt32(DropDownListcapacidad.SelectedValue);
                     string descripcion = Textdescrip.Text;
                     using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
                     {
-                        db.SpCrearHabitacion(Nombre, numeroHabitacion, capacidadMaxima, descripcion).FirstOrDefault();
+                        db.SpCrearHabitacion(Nombre, numeroHabitacion, capacidadMaxima, descripcion);
 
                     }
                     Response.Redirect("ListaHabitaciones.aspx?mensaje=Habitación creada con éxito");
