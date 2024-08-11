@@ -107,7 +107,7 @@ namespace Sistema_Reservaciones_G1.Pages
                     }
                     using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
                     {
-                        var habitacion = db.SpConsultarHabitaciones(idHotel,totalPersonas).FirstOrDefault();
+                        var habitacion = db.SpConsultarHabitacionesPorId(idHotel,totalPersonas).FirstOrDefault();
                         if (habitacion == null) 
                         {
                             lblMensaje.Text = "No hay habitaciones disponibles con la capacidad requerida. Por favor, cambie el número de personas o seleccione otro hotel.Por favor, cambie el número de personas o seleccione otro hotel.";
