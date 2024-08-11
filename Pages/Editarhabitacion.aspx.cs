@@ -1,4 +1,5 @@
-﻿using DataModels;
+﻿using Azure.Core;
+using DataModels;
 using LinqToDB;
 using System;
 using System.Collections.Generic;
@@ -34,7 +35,7 @@ namespace Sistema_Reservaciones_G1.Pages
                     {
 
                         var habitacion = db.SpConsultarHabitaciones(habitacionId).FirstOrDefault();
-
+                        var listaHabitacion = db.SpConsultarListaHabitaciones().FirstOrDefault();
                         if (habitacion == null)
                         {
                             lblMensaje.Text = "La habitación no fue encontrada.";
@@ -45,11 +46,11 @@ namespace Sistema_Reservaciones_G1.Pages
                         {
                             Response.Redirect("~/Pages/CrearHabitacion.aspx");
                         }
-                        
+
 
                         // Aqui carga los datos de habitacion seleccionada
-                        
-                        Hotelselec.Text = habitacion.Nombre;  
+
+                        Hotelselec.Text = habitacion.Nombre;
                         txtnumhabitacion.Text = habitacion.NumeroHabitacion;
                         DropDownListcapacidad.SelectedValue = habitacion.CapacidadMaxima.ToString();
                         Textdescrip.Text = habitacion.Descripcion;
@@ -66,16 +67,8 @@ namespace Sistema_Reservaciones_G1.Pages
 
             }
         }
-
-
-
-
-
-
         protected void Buttoninactivar_Click(object sender, EventArgs e)
         {
-
-
             try
             {
                 int habitacionId = int.Parse(Request.QueryString["ID"]);
@@ -85,7 +78,7 @@ namespace Sistema_Reservaciones_G1.Pages
                     db.InactivarHabitacion(habitacionId);
                 }
 
-                Response.Redirect("~/Pages/MensajeExito.aspx?mensaje=la habitación ha sido inactivada exitosamente");
+                Response.Redirect("~/Pages/ExitoHabitaciones.aspx?mensaje=Habitación%20editada%20con%20éxito.");
             }
             catch (Exception ex)
             {
@@ -102,22 +95,50 @@ namespace Sistema_Reservaciones_G1.Pages
             {
                 try
                 {
-                    //int idHabitacion = int.Parse(Request.QueryString["ID"]);??
-                    int habitacionId = Convert.ToInt32(Hotelselec.Text);
+                    int idHabitacion = int.Parse(Request.QueryString["ID"]);
                     string numeroHabitacion = txtnumhabitacion.Text;
                     int capacidadMaxima = Convert.ToInt32(DropDownListcapacidad.SelectedValue);
                     string descripcion = Textdescrip.Text;
+
+                    // Validación: Verificar que la capacidad máxima sea mayor a 0
+                    if (capacidadMaxima <= 0)
+                    {
+                        lblMensaje.Text = "La capacidad máxima debe ser mayor a 0.";
+                        lblMensaje.Visible = true;
+                        return;
+                    }
+
+                    // Validación: Verificar que la descripción no esté vacía
+                    if (string.IsNullOrWhiteSpace(descripcion))
+                    {
+                        lblMensaje.Text = "La descripción no puede estar vacía.";
+                        lblMensaje.Visible = true;
+                        return;
+                    }
+
                     using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
                     {
-                        db.EditarHabitacion(habitacionId, numeroHabitacion, capacidadMaxima, descripcion).FirstOrDefault();
+                        // Validación: Verificar que el número de habitación no esté duplicado
+                        var habitacionDuplicada = db.SpConsultarListaHabitaciones().FirstOrDefault();
 
+                        if (habitacionDuplicada.NumeroHabitacion.Equals(txtnumhabitacion))
+                        {
+                            lblMensaje.Text = "El número de habitación ya existe para este hotel.";
+                            lblMensaje.Visible = true;
+                            return;
+                        }
+
+                        // Si todas las validaciones son exitosas, procede a actualizar la habitación
+                        db.EditarHabitacion(idHabitacion, numeroHabitacion, capacidadMaxima, descripcion);
                     }
+
+                    // Redirecciona a la página de éxito
+                    Response.Redirect("~/Pages/ExitoHabitaciones.aspx?mensaje=Habitación%20editada%20con%20éxito.");
                 }
-                catch
+                catch (Exception ex)
                 {
-
-                    Response.Redirect("Error");
-
+                    lblMensaje.Text = "Error al actualizar la habitación: " + ex.Message;
+                    lblMensaje.Visible = true;
                 }
 
 
@@ -131,5 +152,8 @@ namespace Sistema_Reservaciones_G1.Pages
         {
             Response.Redirect("~/Pages/ListaHabitaciones.aspx");
         }
+
+
+        
     }
 }

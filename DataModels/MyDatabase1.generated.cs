@@ -346,7 +346,31 @@ namespace DataModels
 
 		#region SpConsultarHabitaciones
 
-		public static IEnumerable<SpConsultarHabitacionesResult> SpConsultarHabitaciones(this PvProyectoFinalDB dataConnection, int? @IdHotel, int? @CapacidadRequerida)
+		public static IEnumerable<SpConsultarHabitacionesResult> SpConsultarHabitaciones(this PvProyectoFinalDB dataConnection, int? @IdHabitacion)
+		{
+			var parameters = new []
+			{
+				new DataParameter("@IdHabitacion", @IdHabitacion, LinqToDB.DataType.Int32)
+			};
+
+			return dataConnection.QueryProc<SpConsultarHabitacionesResult>("[dbo].[spConsultarHabitaciones]", parameters);
+		}
+
+		public partial class SpConsultarHabitacionesResult
+		{
+			public int    IdHabitacion     { get; set; }
+			public string Nombre           { get; set; }
+			public string NumeroHabitacion { get; set; }
+			public int    CapacidadMaxima  { get; set; }
+			public string Descripcion      { get; set; }
+			public char   Estado           { get; set; }
+		}
+
+		#endregion
+
+		#region SpConsultarHabitacionesPorId
+
+		public static IEnumerable<SpConsultarHabitacionesPorIdResult> SpConsultarHabitacionesPorId(this PvProyectoFinalDB dataConnection, int? @IdHotel, int? @CapacidadRequerida)
 		{
 			var parameters = new []
 			{
@@ -354,10 +378,10 @@ namespace DataModels
 				new DataParameter("@CapacidadRequerida", @CapacidadRequerida, LinqToDB.DataType.Int32)
 			};
 
-			return dataConnection.QueryProc<SpConsultarHabitacionesResult>("[dbo].[spConsultarHabitaciones]", parameters);
+			return dataConnection.QueryProc<SpConsultarHabitacionesPorIdResult>("[dbo].[spConsultarHabitacionesPorId]", parameters);
 		}
 
-		public partial class SpConsultarHabitacionesResult
+		public partial class SpConsultarHabitacionesPorIdResult
 		{
 			[Column("idHabitacion")      ] public int     IdHabitacion       { get; set; }
 			[Column("numeroHabitacion")  ] public string  NumeroHabitacion   { get; set; }

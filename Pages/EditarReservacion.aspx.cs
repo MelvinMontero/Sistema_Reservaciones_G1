@@ -16,7 +16,6 @@ namespace Sistema_Reservaciones_G1.Pages
     public partial class EditarReservacion : System.Web.UI.Page
     {
         string conn = ConfigurationManager.ConnectionStrings["MyDatabase"].ConnectionString;
-        int numeroPersonas;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["idPersona"] == null)
@@ -106,7 +105,7 @@ namespace Sistema_Reservaciones_G1.Pages
                         int idHotel = detalle.IdHotel;
                         if (numeroPersonasValidar <= detalle.CapacidadMaxima)
                         {
-                            var habitacion = db.SpConsultarHabitaciones(idHotel, numeroPersonasValidar).FirstOrDefault();
+                            var habitacion = db.SpConsultarHabitacionesPorId(idHotel, numeroPersonasValidar).FirstOrDefault();
                             decimal costoPorCadaAdulto = habitacion.CostoPorCadaAdulto;
                             decimal costoPorCadaNinho = habitacion.CostoPorCadaNinho;
                             decimal costoTotal = totalDiasReservacion * ((numeroAdultos * costoPorCadaAdulto) + (numeroNinhos * costoPorCadaNinho));

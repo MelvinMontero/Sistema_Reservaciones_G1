@@ -270,6 +270,7 @@
     <Content Include="Pages\Editarhabitacion.aspx" />
     <Content Include="Pages\EditarReservacion.aspx" />
     <Content Include="Pages\Exito.aspx" />
+    <Content Include="Pages\ExitoHabitaciones.aspx" />
     <Content Include="Pages\GestionarReservaciones.aspx" />
     <Content Include="Pages\ListaHabitaciones.aspx" />
     <Content Include="Pages\Login.aspx" />
@@ -426,6 +427,13 @@
     </Compile>
     <Compile Include="Pages\Exito.aspx.designer.cs">
       <DependentUpon>Exito.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ExitoHabitaciones.aspx.cs">
+      <DependentUpon>ExitoHabitaciones.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\ExitoHabitaciones.aspx.designer.cs">
+      <DependentUpon>ExitoHabitaciones.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\GestionarReservaciones.aspx.cs">
       <DependentUpon>GestionarReservaciones.aspx</DependentUpon>

@@ -14,23 +14,29 @@
 
     </div>
       <div>
-          <h2>Numero de habitacion</h2>
-           <asp:TextBox ID="txtnumhabitacion" runat="server" CssClass="form-control" MaxLength="10"></asp:TextBox>
-          <%-- Esta advertencia hace que los caracteres deban ser alfanumericos si no dara un mensaje de error --%>
-           <asp:RegularExpressionValidator ID="revNumHabitacion" runat="server" ControlToValidate="txtnumhabitacion"
-        ErrorMessage="El número de habitación solo puede contener caracteres alfanuméricos." 
-        ValidationExpression="^[a-zA-Z0-9]+$" CssClass="text-danger"></asp:RegularExpressionValidator>
+        <h2>Número de habitación</h2>
+        <!-- Campo de texto para ingresar el número de la habitación -->
+        <asp:TextBox ID="txtnumhabitacion" runat="server" CssClass="form-control" MaxLength="10"></asp:TextBox>
+    
+        <!-- Validador de expresión regular para asegurar que el número de habitación solo contenga caracteres alfanuméricos -->
+        <asp:RegularExpressionValidator ID="revNumHabitacion" runat="server" ControlToValidate="txtnumhabitacion"
+            ErrorMessage="El número de habitación solo puede contener caracteres alfanuméricos." 
+            ValidationExpression="^[a-zA-Z0-9]+$" CssClass="text-danger"></asp:RegularExpressionValidator>
 
-          <%-- Da un mensaje de error al tener un numero de habitacion duplicada --%>
-          <asp:CustomValidator ID="cvNumHabitacionUnico" runat="server" ControlToValidate="txtnumhabitacion" 
-        ErrorMessage="El número de habitación no puede estar duplicado para el mismo hotel." 
-        OnServerValidate="cvNumHabitacionUnico_ServerValidate" CssClass="text-danger"></asp:CustomValidator>
-
-
-      </div>
+        
+    </div>
       <div>
           <h2>Capacidad maxima</h2>
-          <asp:DropDownList ID="DropDownListcapacidad" runat="server" CssClass="form-control"></asp:DropDownList>
+          <asp:DropDownList ID="DropDownListcapacidad" runat="server">
+    <asp:ListItem Text="1" Value="1" />
+    <asp:ListItem Text="2" Value="2" />
+    <asp:ListItem Text="3" Value="3" />
+    <asp:ListItem Text="4" Value="4" />
+    <asp:ListItem Text="5" Value="5" />
+    <asp:ListItem Text="6" Value="6" />
+    <asp:ListItem Text="7" Value="7" />
+    <asp:ListItem Text="8" Value="8" />
+</asp:DropDownList>
           <%-- Advertencia sobre la capacidad maxima de la habitacion --%>
            <asp:RangeValidator ID="rvCapacidad" runat="server" ControlToValidate="DropDownListcapacidad" 
         MinimumValue="1" MaximumValue="8" Type="Integer" ErrorMessage="La capacidad máxima debe ser un número entre 1 y 8." 
@@ -45,9 +51,9 @@
         ValidationExpression="^[a-zA-Z0-9\s]+$" CssClass="text-danger"></asp:RegularExpressionValidator>
       </div>
       <div>
-          <asp:Button ID="ButtonGuardareditarhabitacion" runat="server" Text="Guardar" OnClick="ButtonGuardareditarhabitacion_Click" />
-          <asp:Button ID="Buttoninactivar" runat="server" Text="Inactivar" OnClick="Buttoninactivar_Click" />
-           <asp:Button ID="ButtonRegresar" runat="server" Text="Regresar" OnClick="ButtonRegresar_Click"/>
+          <asp:Button ID="ButtonGuardareditarhabitacion" runat="server" Text="Guardar" CssClass="btn btn-primary" OnClick="ButtonGuardareditarhabitacion_Click" />
+          <asp:Button ID="Buttoninactivar" runat="server" Text="Inactivar" CssClass="btn btn-danger" OnClick="Buttoninactivar_Click" />
+           <asp:Button ID="ButtonRegresar" runat="server" Text="Regresar" CssClass="btn btn-secondary" OnClick="ButtonRegresar_Click"/>
       </div>
  <asp:Label ID="lblMensaje" runat="server" CssClass="text-danger" Visible="False"></asp:Label>
       

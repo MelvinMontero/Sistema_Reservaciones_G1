@@ -43,11 +43,11 @@ namespace Sistema_Reservaciones_G1.Pages
                     .ToList()
                     .Select(hab => new
                     {
-                        hab.IdHabitacion,
+                        hab.ID,
                         hab.Hotel,
                         hab.NumeroHabitacion,
-                        hab.CapacidadMaxima
-
+                        hab.CapacidadMaxima,
+                        hab.Estado
                     })
                     .ToList();
 
@@ -61,9 +61,9 @@ namespace Sistema_Reservaciones_G1.Pages
             }
  
         }
-            }
    
     }
+}
 
     
 

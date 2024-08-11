@@ -39,26 +39,30 @@ namespace Sistema_Reservaciones_G1.Pages
 
         private void CargarHoteles()
         {
-            if (Page.IsValid)
+            try
             {
-                try
+                var lista = new List<ListItem>
                 {
-                    using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
-                    {
-                        var hoteles = db.SpCargartodoslosHoteles()
+                    new ListItem("Seleccione un hotel", "")
+                };
+                using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
+                {
+                    var query = db.SpConsultarHotel()
                         .OrderBy(h => h.Nombre)
-                        .Select(h => h.Nombre)
+                        .Select(h => new ListItem(h.Nombre, h.IdHotel.ToString()))
                         .ToList();
-                        droplisthoteles.DataSource = hoteles;
-                        droplisthoteles.DataBind();
-                    }
+                    lista.AddRange(query);
                 }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine($"Error al cargar hoteles: {ex.Message}");
-                }
+                drdHotel.DataSource = lista;
+                drdHotel.DataTextField = "Text";
+                drdHotel.DataValueField = "Value";
+                drdHotel.DataBind();
             }
-            
+            catch (Exception ex)
+            {
+                Trace.Warn("Error al cargar hoteles", ex.Message);
+            }
+
         }
 
         protected void btnRegresar_Click(object sender, EventArgs e)
@@ -72,29 +76,60 @@ namespace Sistema_Reservaciones_G1.Pages
             {
                 try
                 {
-                    int Nombre = int.Parse(droplisthoteles.SelectedValue);
+                    int Nombre = int.Parse(drdHotel.SelectedValue);
                     string numeroHabitacion = txtnumhabitacion.Text;
                     int capacidadMaxima = Convert.ToInt32(DropDownListcapacidad.SelectedValue);
-                    string descripcion = Textdescrip.Text;
+                    string descripcion = txtDescripcion.Text;
                     using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
                     {
                         db.SpCrearHabitacion(Nombre, numeroHabitacion, capacidadMaxima, descripcion);
 
                     }
-                    Response.Redirect("ListaHabitaciones.aspx?mensaje=Habitación creada con éxito");
+                    Response.Redirect("~/Pages/ExitoHabitaciones.aspx?mensaje=Habitación%20creada%20con%20éxito.");
                 }
-                catch
+                catch (Exception ex)
                 {
 
-                    Response.Redirect("Error");
+                    lblMensaje.Text = "No se pudo guardar. " + ex;
 
                 }
 
             }
         }
+        protected void cvNumHabitacionUnico_ServerValidate(object source, ServerValidateEventArgs args)
+        {
+            try
+            {
+                // Obtén el ID del hotel desde la consulta si existe
+                int idHotel = int.Parse(Request.QueryString["ID_Hotel"]);
 
+                // Obtén el número de habitación ingresado por el usuario
+                string numeroHabitacion = args.Value;
 
-
-
+                using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
+                {
+                    // Verifica si existe otra habitación con el mismo número en el mismo hotel
+                    var habitacionDuplicada = db.SpConsultarListaHabitaciones()
+                        .FirstOrDefault();
+                    if (habitacionDuplicada.NumeroHabitacion.Equals(txtnumhabitacion))
+                    {
+                        lblMensaje.Text = "El número de habitación ya existe para este hotel.";
+                        lblMensaje.Visible = true;
+                        args.IsValid = false;
+                        return;
+                    }
+                    else
+                    {
+                        args.IsValid = true; // El número de habitación es único
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lblMensaje.Text = "Error al validar el número de habitación: " + ex.Message;
+                lblMensaje.Visible = true;
+                args.IsValid = false;
+            }
+        }
     }
 }
