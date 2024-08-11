@@ -32,23 +32,28 @@ namespace Sistema_Reservaciones_G1.Pages
 
                     using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
                     {
+
                         var habitacion = db.SpConsultarHabitaciones(habitacionId).FirstOrDefault();
 
-
+                        if (habitacion == null)
+                        {
+                            lblMensaje.Text = "La habitación no fue encontrada.";
+                            lblMensaje.Visible = true;
+                            return;
+                        }
                         if (habitacion.Estado == 'I')
                         {
-                            Response.Redirect("~/Pages/Gestionarhabitaciones.aspx");
+                            Response.Redirect("~/Pages/CrearHabitacion.aspx");
                         }
-                        else
-                        {
-                            Response.Redirect("~/Pages/HabitacionConReservasActivas.aspx");
-                        }
+                        
 
                         // Aqui carga los datos de habitacion seleccionada
-                        Hotelselec.Text = habitacion.IdHotel;
+                        
+                        Hotelselec.Text = habitacion.Nombre;  
                         txtnumhabitacion.Text = habitacion.NumeroHabitacion;
                         DropDownListcapacidad.SelectedValue = habitacion.CapacidadMaxima.ToString();
                         Textdescrip.Text = habitacion.Descripcion;
+
                     }
                 }
                 catch (Exception ex)
