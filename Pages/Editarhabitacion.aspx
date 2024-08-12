@@ -53,7 +53,7 @@
       <div>
           <asp:Button ID="ButtonGuardareditarhabitacion" runat="server" Text="Guardar" CssClass="btn btn-primary" OnClick="ButtonGuardareditarhabitacion_Click" />
           <asp:Button ID="Buttoninactivar" runat="server" Text="Inactivar" CssClass="btn btn-danger" OnClick="Buttoninactivar_Click" />
-           <asp:Button ID="ButtonRegresar" runat="server" Text="Regresar" CssClass="btn btn-secondary" OnClick="ButtonRegresar_Click"/>
+           <asp:Button ID="ButtonRegresar" runat="server" Text="Regresar" CssClass="btn btn-secondary" OnClick="ButtonRegresar_Click" CausesValidation="false" />
       </div>
  <asp:Label ID="lblMensaje" runat="server" CssClass="text-danger" Visible="False"></asp:Label>
       

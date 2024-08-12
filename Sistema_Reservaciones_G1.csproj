@@ -263,8 +263,8 @@
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="imagenes\ToGO %281%29.png" />
     <Content Include="imagenes\ToGO.png" />
+    <Content Include="imagenes\ToGOInicio.png" />
     <Content Include="LinqToDB.Templates\CopyMe.SqlServer.tt.txt" />
     <Content Include="Pages\CrearHabitacion.aspx" />
     <Content Include="Pages\CrearReservacion.aspx" />

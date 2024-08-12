@@ -394,6 +394,29 @@ namespace DataModels
 
 		#endregion
 
+		#region SpConsultarHabitacionesPorNumeroHabitacion
+
+		public static IEnumerable<SpConsultarHabitacionesPorNumeroHabitacionResult> SpConsultarHabitacionesPorNumeroHabitacion(this PvProyectoFinalDB dataConnection, string @numeroHabitacion, int? @idHotel)
+		{
+			var parameters = new []
+			{
+				new DataParameter("@numeroHabitacion", @numeroHabitacion, LinqToDB.DataType.VarChar)
+				{
+					Size = 10
+				},
+				new DataParameter("@idHotel",          @idHotel,          LinqToDB.DataType.Int32)
+			};
+
+			return dataConnection.QueryProc<SpConsultarHabitacionesPorNumeroHabitacionResult>("[dbo].[spConsultarHabitacionesPorNumeroHabitacion]", parameters);
+		}
+
+		public partial class SpConsultarHabitacionesPorNumeroHabitacionResult
+		{
+			[Column("numeroHabitacion")] public string NumeroHabitacion { get; set; }
+		}
+
+		#endregion
+
 		#region SpConsultarHotel
 
 		public static IEnumerable<Hotel> SpConsultarHotel(this PvProyectoFinalDB dataConnection)

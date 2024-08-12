@@ -110,7 +110,7 @@ namespace Sistema_Reservaciones_G1.Pages
                         var habitacion = db.SpConsultarHabitacionesPorId(idHotel,totalPersonas).FirstOrDefault();
                         if (habitacion == null) 
                         {
-                            lblMensaje.Text = "No hay habitaciones disponibles con la capacidad requerida. Por favor, cambie el número de personas o seleccione otro hotel.Por favor, cambie el número de personas o seleccione otro hotel.";
+                            lblMensaje.Text = "No hay habitaciones disponibles con la capacidad requerida. Por favor, cambie el número de personas o seleccione otro hotel.";
                         }
                         else
                         {

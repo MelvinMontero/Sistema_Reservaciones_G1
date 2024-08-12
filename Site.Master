@@ -38,12 +38,13 @@
             </Scripts>
         </asp:ScriptManager>
 
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
-            <div class="container">
-                
-                <a class="navbar-brand" runat="server" href="~/">
-                     <img src="~/Imagenes/ToGO.png" alt="Logo" style="height:40px; width:auto; margin-right:10px;" />
-                    Sistema de Reservaciones G1</a>
+       <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" runat="server" href="~/">
+            <asp:Image ID="LOGO" runat="server" ImageUrl="~/imagenes/ToGO.png" AlternateText="Logo" Style="height:40px; width:auto; margin-right:10px;" />
+
+                Sistema de Reservaciones G1
+            </a>
                 <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Alternar navegación" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>

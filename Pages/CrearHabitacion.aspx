@@ -44,7 +44,7 @@
       </div>
       <div>
           <asp:Button ID="btnGuardar" runat="server" Text="Guardar" OnClick="btnGuardar_Click" />
-            <asp:Button ID="btnRegresar" runat="server" Text="Regresar" OnClick="btnRegresar_Click"/>
+            <asp:Button ID="btnRegresar" runat="server" Text="Regresar" OnClick="btnRegresar_Click" CausesValidation="false" />
       </div>
     <asp:Label ID="lblMensaje" runat="server" Text=""></asp:Label>
       

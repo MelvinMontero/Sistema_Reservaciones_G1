@@ -100,23 +100,19 @@ namespace Sistema_Reservaciones_G1.Pages
         {
             try
             {
-                // Obtén el ID del hotel desde la consulta si existe
-                int idHotel = int.Parse(Request.QueryString["ID_Hotel"]);
-
-                // Obtén el número de habitación ingresado por el usuario
-                string numeroHabitacion = args.Value;
+                string numeroHabitacion = txtnumhabitacion.Text;
+                int idHotel = int.Parse(drdHotel.SelectedValue);
 
                 using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
                 {
-                    // Verifica si existe otra habitación con el mismo número en el mismo hotel
-                    var habitacionDuplicada = db.SpConsultarListaHabitaciones()
-                        .FirstOrDefault();
-                    if (habitacionDuplicada.NumeroHabitacion.Equals(txtnumhabitacion))
+                    // Llama al procedimiento almacenado con los parámetros adecuados
+                    var habitacionDuplicada = db.SpConsultarHabitacionesPorNumeroHabitacion(numeroHabitacion, idHotel).FirstOrDefault();
+
+                    if (habitacionDuplicada != null)
                     {
                         lblMensaje.Text = "El número de habitación ya existe para este hotel.";
                         lblMensaje.Visible = true;
                         args.IsValid = false;
-                        return;
                     }
                     else
                     {
