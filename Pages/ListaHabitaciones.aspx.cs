@@ -13,7 +13,7 @@ namespace Sistema_Reservaciones_G1.Pages
 {
    
     public partial class ListaHabitaciones : System.Web.UI.Page
-    {
+    { //validador de sesiones
         string conn = ConfigurationManager.ConnectionStrings["MyDatabase"].ConnectionString;
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -32,7 +32,7 @@ namespace Sistema_Reservaciones_G1.Pages
                 Response.Redirect("~/Pages/MisReservaciones.aspx");
             }
         }
-
+        //carga todas las habitaciones por medio de un spconsultarlistahabitaciones y las imprime en un gridview
         private void CargarHabitaciones()
         {
             try

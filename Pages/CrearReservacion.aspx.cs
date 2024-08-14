@@ -14,7 +14,7 @@ namespace Sistema_Reservaciones_G1.Pages
     {
         string conn = ConfigurationManager.ConnectionStrings["MyDatabase"].ConnectionString;
         protected void Page_Load(object sender, EventArgs e)
-        {
+        { //verificacion de sesion y carga de metodos 
             if (Session["idPersona"] == null)
             {
                 Response.Redirect("~/Pages/Login.aspx");
@@ -27,7 +27,7 @@ namespace Sistema_Reservaciones_G1.Pages
             }
         }
         private void CargarHoteles()
-        {
+        {  // carga una lista de hoteles desde la base de datos con SpConsultarHotel
             try
             {
                 var lista = new List<ListItem>
@@ -53,7 +53,7 @@ namespace Sistema_Reservaciones_G1.Pages
             }
         }
         private void CargarClientes()
-        {
+        { // carga una lista de clientes desde  SpConsultarPersona a un drop down.
             try
             {
                 var lista = new List<ListItem>
@@ -75,7 +75,7 @@ namespace Sistema_Reservaciones_G1.Pages
                 drdCliente.DataBind();
 
                 if (Session["EsEmpleado"] == null || !(bool)Session["EsEmpleado"])
-                {
+                { // el dropdown drdCliente se desactiva si el usuario no es empleado (Enabled = false) y se auto selecciona el cliente actual basado en Session["idPersona"].
                     drdCliente.Enabled = false;
                     drdCliente.SelectedValue = Session["idPersona"].ToString();
                 }
@@ -89,7 +89,7 @@ namespace Sistema_Reservaciones_G1.Pages
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
             if (Page.IsValid)
-            {             
+            {             //si la pagina es valida se toman los datos del hotel y de los clientes
                 try
                 {
                     int idHotel = int.Parse(drdHotel.SelectedValue);
@@ -98,7 +98,7 @@ namespace Sistema_Reservaciones_G1.Pages
                     DateTime fechaSalida = DateTime.Parse(txtFechaSalida.Text);
                     int numAdultos = int.Parse(txtNumAdultos.Text);
                     int numNinos = int.Parse(txtNumNinhos.Text);
-                    int totalPersonas = numAdultos + numNinos;
+                    int totalPersonas = numAdultos + numNinos; //calculo de adultos y ninos
                     int totalDiasReservacion = (fechaSalida - fechaEntrada).Days;
                     decimal costoTotal = 0;
                     if (totalDiasReservacion == 0)
@@ -106,14 +106,14 @@ namespace Sistema_Reservaciones_G1.Pages
                         totalDiasReservacion = 1;
                     }
                     using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
-                    {
+                    { //se calcula si para el numero de personas total existe una habitacion
                         var habitacion = db.SpConsultarHabitacionesPorId(idHotel,totalPersonas).FirstOrDefault();
                         if (habitacion == null) 
                         {
                             lblMensaje.Text = "No hay habitaciones disponibles con la capacidad requerida. Por favor, cambie el número de personas o seleccione otro hotel.";
                         }
                         else
-                        {
+                        { //si hay una habicacion si pueden hacer la reservacion y se guarda, manda a una pagina de exito
                             int idHabitacion = habitacion.IdHabitacion;
                             string nHabitacion = habitacion.NumeroHabitacion;
                             int capacidadMaxima = habitacion.CapacidadMaxima;
@@ -142,14 +142,14 @@ namespace Sistema_Reservaciones_G1.Pages
                     }
                 }
                 catch (Exception ex)
-                {
+                { //error al guardar
                     Trace.Warn("Error al guardar la reserva", ex.Message);
                     ScriptManager.RegisterStartupScript(this, GetType(), "alertMessage", "alert('Se produjo un error al guardar la reservación.');", true);
                 }               
             }
         }
         protected void btnCancelar_Click(object sender, EventArgs e)
-        {
+        { //si se desea cancelar y es empleado va a gestionar reservaciones, si no va a reservaciones
             if (Session["EsEmpleado"]!=null && (bool)Session["EsEmpleado"])
             {
                 Response.Redirect("~/Pages/GestionarReservaciones.aspx");
@@ -160,7 +160,7 @@ namespace Sistema_Reservaciones_G1.Pages
             }
         }
         protected void ValidateFechaEntrada(object source, ServerValidateEventArgs args)
-        {
+        { //la fecha de entrada no sea anterior a la fecha actual, y que la fecha de salida no sea anterior a la fecha de entrada.
             DateTime fechaEntrada;
             DateTime fechaSalida;
 
@@ -176,7 +176,7 @@ namespace Sistema_Reservaciones_G1.Pages
         }
 
         protected void ValidateFechaSalida(object source, ServerValidateEventArgs args)
-        {
+        { //la fecha de entrada no sea anterior a la fecha actual, y que la fecha de salida no sea anterior a la fecha de entrada.
             DateTime fechaEntrada;
             DateTime fechaSalida;
             if (DateTime.TryParseExact(txtFechaEntrada.Text, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out fechaEntrada) &&

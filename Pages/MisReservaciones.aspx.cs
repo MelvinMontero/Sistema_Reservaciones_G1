@@ -14,7 +14,7 @@ namespace Sistema_Reservaciones_G1.Pages
     {
         string conn = ConfigurationManager.ConnectionStrings["MyDatabase"].ConnectionString;
         protected void Page_Load(object sender, EventArgs e)
-        {
+        { //verificacion de sesion si es persona
             if (Session["idPersona"] == null)
             {
                 Response.Redirect("~/Pages/Login.aspx");
@@ -23,7 +23,7 @@ namespace Sistema_Reservaciones_G1.Pages
             if (!IsPostBack)
             {
                 try
-                {
+                { //carga todas las reservaciones segun el id persona de la persona que hizo login
                     using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
                     {
                         var lista = db.SpMisReservaciones(idPersona)
@@ -49,6 +49,7 @@ namespace Sistema_Reservaciones_G1.Pages
             }
            
         }
+        //se obtiene el estado de la habitacion
         private string ObtenerEstado(char estado, DateTime fechaEntrada, DateTime fechaSalida)
         {
             DateTime fechaActual = DateTime.Now;

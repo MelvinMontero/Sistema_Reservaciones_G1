@@ -48,7 +48,7 @@ namespace Sistema_Reservaciones_G1.Pages
                                     Response.Redirect("~/Pages/MisReservaciones.aspx");
                                 }
 
-                                // Cargar los detalles de la reservación en el formulario
+                                // Cargar los detalles de la reservación en el formulario de detalles
                                 TextResernum.Text = detalle.IdReservacion.ToString();
                                 Texthotel.Text = detalle.Nombre.ToString();
                                 Textnumhabit.Text = detalle.NumeroHabitacion.ToString();
@@ -109,12 +109,15 @@ namespace Sistema_Reservaciones_G1.Pages
             }
 
         }
-        protected void btnEditar_Click(object sender, EventArgs e)
+
+        //Este método (get ) redirige al usuario a la página de edición de la reservación con el ID de la reservación actual.
+        protected void btnEditar_Click(object sender, EventArgs e) 
         {
             int idReservacion = int.Parse(Request.QueryString["ID"]);
             Response.Redirect($"~/Pages/EditarReservacion.aspx?id={idReservacion}");
         }
 
+        //se verifica si es un empleado o no, si lo es cancela la reservacion por el spcancelarreservacion
         protected void btnCancelar_Click(object sender, EventArgs e)
         {
             int idReservacion = int.Parse(Request.QueryString["ID"]);
@@ -186,7 +189,7 @@ namespace Sistema_Reservaciones_G1.Pages
                 lblMensaje.Text = "Ha ocurrido un error inesperado. " + ex.Message;
             }
         }
-
+        //redigire al usuario a gestionar reservaciones si es empleado
         protected void btnRegresar_Click(object sender, EventArgs e)
         {
             if (Session["EsEmpleado"] != null && (bool)Session["EsEmpleado"])

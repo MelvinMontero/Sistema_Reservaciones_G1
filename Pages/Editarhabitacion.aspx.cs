@@ -26,7 +26,7 @@ namespace Sistema_Reservaciones_G1.Pages
             bool esEmpleado = Session["EsEmpleado"] != null && (bool)Session["EsEmpleado"];
 
             if (!IsPostBack)
-            {
+            { //si se realiza la carga se cargan los datos consultando si la habitacion del id existe y esta en la lista, tambien si no esta inactiva
                 try
                 {
                     int habitacionId = int.Parse(Request.QueryString["ID"]);
@@ -67,6 +67,7 @@ namespace Sistema_Reservaciones_G1.Pages
 
             }
         }
+        //se inactiva la habitacion segun el id de query string por el metodo inactivar habitacion
         protected void Buttoninactivar_Click(object sender, EventArgs e)
         {
             try
@@ -128,7 +129,7 @@ namespace Sistema_Reservaciones_G1.Pages
                             return;
                         }
 
-                        // Si todas las validaciones son exitosas, procede a actualizar la habitación
+                        // Si todas las validaciones son exitosas, procede a actualizar la habitación pot el metodo de editar
                         db.EditarHabitacion(idHabitacion, numeroHabitacion, capacidadMaxima, descripcion);
                     }
 

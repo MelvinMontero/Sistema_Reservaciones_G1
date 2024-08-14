@@ -20,7 +20,7 @@ namespace Sistema_Reservaciones_G1.Pages
                  Response.Redirect("~/Pages/Login.aspx");
             }
             if (!IsPostBack)
-            {
+            {  //si es empleado empieza a cargar los datos 
                 CargarClientes();
                 CargarReservaciones();
             }
@@ -28,7 +28,7 @@ namespace Sistema_Reservaciones_G1.Pages
         private void CargarClientes()
         {
             try
-            {
+            { //se carga dentro de el drop down clientes los clientes de la base de datos por medio de consultar persona
                 var lista = new List<ListItem>
                 {
                     new ListItem("Seleccione un cliente", "")
@@ -52,7 +52,7 @@ namespace Sistema_Reservaciones_G1.Pages
             }
         }
         private void CargarReservaciones()
-        {
+        { //Usa un procedimiento almacenado (SpGestionarReservaciones) para obtener las reservaciones.
             try
             {
                 using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
@@ -67,7 +67,7 @@ namespace Sistema_Reservaciones_G1.Pages
                             x.FechaSalida,
                             x.CostoTotal,
                             Estado = ObtenerEstado(x.Estado, x.FechaEntrada.Value, x.FechaSalida.Value)
-                        }).ToList();
+                        }).ToList(); //lista item
 
                     gvReservaciones.DataSource = lista;
                     gvReservaciones.DataBind();
@@ -78,6 +78,7 @@ namespace Sistema_Reservaciones_G1.Pages
                 System.Diagnostics.Debug.WriteLine($"Error: {ex.Message}");
             }
         }
+        //obtener estado es un metodo para validar si la habitacion esta cancelada,finalizada,en proceso o en espera segun su fecha
         private string ObtenerEstado(char estado, DateTime fechaEntrada, DateTime fechaSalida)
         {
             DateTime fechaActual = DateTime.Now;
@@ -87,21 +88,23 @@ namespace Sistema_Reservaciones_G1.Pages
             }
             if (estado == 'A')
             {
-                if (fechaSalida < fechaActual)
+                if (fechaSalida < fechaActual) //si la fecha actual es mayor a la fecha de salida esta finalizada
                 {
                     return "Finalizada";
                 }
-                if (fechaEntrada <= fechaActual)
+                if (fechaEntrada <= fechaActual) //si la fecha de entrada es menor o igual a la fecha actual esta en proceso
                 {
                     return "En proceso";
                 }
-                if (fechaEntrada > fechaActual && fechaSalida > fechaActual)
+                if (fechaEntrada > fechaActual && fechaSalida > fechaActual) //si la fecha de entrada es mayor a la fecha actual y la fecha de salida es mayor a la fecha actual
                 {
                     return "En espera";
                 }
             }
             return "Desconocido";
         }
+
+        //Permite al usuario filtrar las reservaciones mostradas en el GridView en función del cliente y un rango de fechas.
         protected void btnFiltrar_Click(object sender, EventArgs e)
         {
             string clienteSeleccionado = ddlClientes.SelectedItem.Text;
@@ -111,7 +114,7 @@ namespace Sistema_Reservaciones_G1.Pages
             if (DateTime.TryParse(txtFechaEntrada.Text, out fechaEntrada) &&
                 DateTime.TryParse(txtFechaSalida.Text, out fechaSalida))
             {
-                if (fechaSalida >= fechaEntrada)
+                if (fechaSalida >= fechaEntrada) //selecciona los valores para imprimir de nuevo la lista con los datos seleccionados
                 {
                     using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
                     {
@@ -146,7 +149,7 @@ namespace Sistema_Reservaciones_G1.Pages
             txtFechaEntrada.Text = fechaEntrada.ToString("yyyy-MM-dd");
             txtFechaSalida.Text = fechaSalida.ToString("yyyy-MM-dd");
         }
-
+        //valida que la fecha de salida no sea antes que la de entrada
         protected void ValidateFechaSalida(object source, ServerValidateEventArgs args)
         {
             DateTime fechaEntrada, fechaSalida;

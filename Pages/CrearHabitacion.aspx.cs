@@ -29,7 +29,7 @@ namespace Sistema_Reservaciones_G1.Pages
 
             if (!IsPostBack)
             {
-                
+                //llama a la carga de hoteles 
                     CargarHoteles();
 
                
@@ -38,7 +38,7 @@ namespace Sistema_Reservaciones_G1.Pages
         }
 
         private void CargarHoteles()
-        {
+        { //metodo que carga todos los hoteles de la base de datos por medio de spconsultarhotel
             try
             {
                 var lista = new List<ListItem>
@@ -71,7 +71,7 @@ namespace Sistema_Reservaciones_G1.Pages
         }
 
         protected void btnGuardar_Click(object sender, EventArgs e)
-        {
+        { //guarda los datos registrados si la pagina es valida y redirecciona a una pagina con un mensaje 
             if (Page.IsValid)
             {
                 try
@@ -97,7 +97,7 @@ namespace Sistema_Reservaciones_G1.Pages
             }
         }
         protected void cvNumHabitacionUnico_ServerValidate(object source, ServerValidateEventArgs args)
-        {
+        { //valida que el número de habitación ingresado sea único para el hotel seleccionado.
             try
             {
                 string numeroHabitacion = txtnumhabitacion.Text;

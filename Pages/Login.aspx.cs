@@ -26,7 +26,7 @@ namespace Sistema_Reservaciones_G1.Pages
                 using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn)))
                 {
                     try
-                    {
+                    { //que verifica si el usuario existe en la base de datos y devuelve sus datos si la autenticación es exitosa
                         var persona = db.SpAutenticarUsuario(Email, Clave).FirstOrDefault();
                         if (persona!=null)
                         {
@@ -37,11 +37,11 @@ namespace Sistema_Reservaciones_G1.Pages
                                 Session["Email"] = persona.Email;
                                 Session["EsEmpleado"] = persona.EsEmpleado;
                                 if (Session["EsEmpleado"] != null && (bool)Session["EsEmpleado"])
-                                {
+                                { //si el usuario es empleado accede a gestionar
                                     Response.Redirect("~/Pages/GestionarReservaciones.aspx");
                                 }
                                 else
-                                {
+                                { //si no es empleado va a sus reservaciones 
                                     Response.Redirect("~/Pages/MisReservaciones.aspx");
                                 }
 

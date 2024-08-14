@@ -16,12 +16,14 @@ namespace Sistema_Reservaciones_G1.Pages
     public partial class EditarReservacion : System.Web.UI.Page
     {
         string conn = ConfigurationManager.ConnectionStrings["MyDatabase"].ConnectionString;
+        //manejo de sesiones
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["idPersona"] == null)
             {
                 Response.Redirect("~/Pages/Login.aspx");
             }
+
             int idPersona = (int)Session["idPersona"];
             bool esEmpleado = Session["EsEmpleado"] != null && (bool)Session["EsEmpleado"];
             if (!IsPostBack)
@@ -29,12 +31,12 @@ namespace Sistema_Reservaciones_G1.Pages
                 try
                 {
                     int idReservacion = int.Parse(Request.QueryString["ID"]);
-                    
+                    //Se obtiene el ID de la reservación desde la cadena de consulta
                     using (PvProyectoFinalDB db = new PvProyectoFinalDB(new DataOptions().UseSqlServer(conn))) 
                     {
 
                         var detalle = db.SpConsultarReservacion(idReservacion).FirstOrDefault();
-                        if (!esEmpleado && detalle.IdPersona != idPersona)
+                        if (!esEmpleado && detalle.IdPersona != idPersona) //si el id de persona de reservacion es diferente a la persona de editar redirigit
                         {
                             Response.Redirect("~/Pages/MisReservaciones.aspx");
                         }
@@ -81,6 +83,8 @@ namespace Sistema_Reservaciones_G1.Pages
             }
             lblMensaje.Visible = false;
         }
+
+        //Se actualiza la reservación en la base de datos usando un procedimiento almacenado (SpModificarReservacion)
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
             if (Page.IsValid)
